@@ -1,0 +1,273 @@
+---
+title: "Climate Model"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+#Packages
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(tidyverse)
+library(plotly)
+library(scales)
+```
+
+#Input parameters
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# INPUT PARAMETERS
+S <- 1370
+A <- 204
+B <- 2.17
+K <- 3.86
+ai <- 0.62
+ab <- 0.25
+#Tl <- -10
+#Tu <- 24
+Temperature <- rep(0,300)
+Temp <- rep(0,100)
+Temp2 <- rep(0,180)
+Temp5 <- rep(0,200)
+J <- rep(0,100)
+Albedo <- rep(0,300)
+t <- c(1:300)
+Zones <- seq(-89, 89, by = 2)
+```
+
+# Functions
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+Func <-  function(x){
+  0.7768699*cos(0.0164348*x)^2+0.4617747
+}
+gauss <-  function(x,m,sd,b){
+  ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
+}
+Sun1 <- function(x,a){a*x/100}
+Sun2 <- function(x){1370*(sinpi((x+90)/180))^2}
+Sun3 <- function(x){1370-(((1370)/(sqrt(2*pi*1^2)))*exp(-(x-50)^2/(2*1^2)))}
+Sun4 <- function(x){ifelse(x==50,1370/3,1370)}
+#Sun5 <- function(x){(1/10000) * (abs(x-15000)+2500)}
+Sun5 <- function(x){3.5*(sinpi((x/100+90)/180))^2+0.2}
+Incident <- function(x,y){x*y/4}
+Step <- function(x,c){ifelse(x<c, 0.6, 0.3)}
+alb <- function(x,a,b){
+  (-exp(2.2*x+10)/(exp(2.2*x+10)+1))*(a-b)+a}
+```
+
+$$ S_1(t)= \frac{1370}{100}x \\ S_2(t)= 1370(\sin^2(x+90)) \\ S_3(t)= 1370\Big(1-\frac{1}{\sqrt{2\pi}}e^{-(x-50)^2/2}\Big) \\ S_4(t)=1370\Big(1-\frac{1}{3}\delta(t-50)\Big) \\ S_5(t)=\frac{1}{10000}(|x-15000|+2500)  $$
+
+#Introduction
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+Ti <- gauss(Zones,0,50,31.6)
+cosZones <- abs(cospi(Zones/180))
+SunWt <- Func(Zones)
+Rin <- Incident(S,SunWt)
+T <- gauss(Zones,0,50,31.6)
+a <- alb(T,ai,ab)
+#a <- Step(T,-10)
+```
+
+## Run 0
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+for(i in c(1:300)) {Tcos <- cosZones*T
+Tm <- sum(Tcos)/sum(cosZones)
+T <- (Rin*(1-a)+K*Tm-A) / (B+K)
+a <- alb(T,0.62,0.25)
+Temperature[i] <-  Tm
+#Albedo[i] <- a 
+} 
+
+data1 <- data.frame(Zones,T,a,Ti)
+plot1 <- ggplot(data1) +
+  geom_line(aes(Zones, T),colour = 'red') +
+  geom_line(aes(Zones, a*25), colour = 'blue')+
+  geom_line(aes(Zones, Ti), colour = 'red', linetype = "dashed")+
+  scale_y_continuous(sec.axis = sec_axis(~./25,name = "a"))
+plot1
+
+data2 <- data.frame(t,Temperature)
+plot2 <- ggplot(data2) +
+  geom_line(aes(t, Temperature),colour = 'green')+ylab("<T>")
+plot2
+```
+
+## Run 1
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+TEMP1 <- matrix(NA, nrow=90, ncol=100)
+for(j in c(1:100)){
+  T <- gauss(Zones,0,50,31.6)
+  a <- alb(T,ai,ab)
+  S <- Sun1(1370,j)
+  Rin <- Incident(S,SunWt)
+  
+  for(i in c(1:300))
+  {Tcos <- cosZones*T
+  Tm <- sum(Tcos)/sum(cosZones)
+  T <- (Rin*(1-a)+K*Tm-A) / (B+K)
+  a <- alb(T,ai,ab)}
+  TEMP1[,j] <- T
+  J[j] <- j
+  Temp[j] <- Tm
+}
+
+data3 <- data.frame(J,Temp)
+plot3 <- ggplot(data3,aes(J,Temp))+geom_line(aes(J, Temp),colour = 'red')+xlab("t")+ylab("<T>")+ggtitle("Temperatura media non dinamica (T(t) indipendente da T(t-1))")
+plot3
+
+plot_ly(z=~TEMP1) %>%   layout(
+    title = "Con inizializzazione",
+    scene = list(
+      xaxis = list(title = "S/100"),
+      yaxis = list(title = "Latitude"),
+      zaxis = list(title = "T")
+    )) %>% add_surface(M="T")
+```
+
+## Run 2
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+T2 <- gauss(Zones,0,50,31.6)
+TEMP2 <- matrix(NA, nrow=90, ncol=180)
+a <- alb(T2,ai,ab)
+Sarr <- rep(0,180) 
+for(j in c(1:180)){
+  S <- Sun2(j)
+  Rin <- Incident(S,SunWt)
+  for(i in c(1:300))
+  {Tcos <- cosZones*T2
+  Tm <- sum(Tcos)/sum(cosZones)
+  T2 <- (Rin*(1-a)+K*Tm-A) / (B+K)
+  a <- alb(T2,ai,ab)
+  }
+  Sarr[j] <- Sun2(j)
+  TEMP2[,j] <- T2
+  J[j] <- j
+  Temp2[j] <- Tm
+}
+
+data3 <- data.frame(J,Temp2)
+plot3 <- ggplot(data3,aes(J,Temp2))+geom_line(aes(J, Temp2),colour = 'red')+ylab("<T>")+ggtitle("Perturbazione sinusoidale")
+plot3
+
+plot_ly(z=~TEMP2) %>% add_surface() %>% layout(
+    title = "Senza inizializzazione",
+    scene = list(
+      xaxis = list(title = "S/100"),
+      yaxis = list(title = "Latitude"),
+      zaxis = list(title = "T")
+    ))
+
+```
+
+## Run 3 & 4
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+TEMP3 <- matrix(NA, nrow=90, ncol=200)
+T3 <- gauss(Zones,0,50,31.6)
+a <- alb(T3,ai,ab)
+
+for(j in c(1:200)){
+  S <- Sun3(j)
+  Rin <- Incident(S,SunWt)
+  for(i in c(1:300))
+  {Tcos <- cosZones*T3
+  Tm <- sum(Tcos)/sum(cosZones)
+  T3 <- (Rin*(1-a)+K*Tm-A) / (B+K)
+  a <- alb(T3,ai,ab)
+  }
+  TEMP3[,j] <- T3
+  J[j] <- j
+  Temp[j] <- Tm
+}
+
+data3 <- data.frame(J,Temp)
+plot3 <- ggplot(data3,aes(J,Temp))+geom_line(aes(J, Temp),colour = 'red')+ylab("<T>")+ggtitle("Perturbazione gaussiana")
+plot3
+
+#Run4: senza inizializzazione di (T,a)
+
+TEMP4 <- matrix(NA, nrow=90, ncol=200)
+T4 <- gauss(Zones,0,50,31.6)
+a <- alb(T4,ai,ab)
+
+for(j in c(1:200)){
+  S <- Sun4(j)
+  Rin <- Incident(S,SunWt)
+  for(i in c(1:300))
+  {Tcos <- cosZones*T4
+  Tm <- sum(Tcos)/sum(cosZones)
+  T4 <- (Rin*(1-a)+K*Tm-A) / (B+K)
+  a <- alb(T4,ai,ab)
+  }
+  TEMP4[,j] <- T4
+  J[j] <- j
+  Temp[j] <- Tm
+}
+
+data3 <- data.frame(J,Temp)
+plot3 <- ggplot(data3,aes(J,Temp))+geom_line(aes(J, Temp),colour = 'red')+ylab("<T>")+ggtitle("Perturbazione deltiforme")
+plot3
+
+plot_ly(z=~TEMP3) %>% add_surface()%>% layout(
+    title = "Senza inizializzazione",
+    scene = list(
+      xaxis = list(title = "S/100"),
+      yaxis = list(title = "Latitude"),
+      zaxis = list(title = "T")
+    ))
+plot_ly(z=~TEMP4) %>% add_surface()%>% layout(
+    title = "Senza inizializzazione",
+    scene = list(
+      xaxis = list(title = "S/100"),
+      yaxis = list(title = "Latitude"),
+      zaxis = list(title = "T")
+    ))
+
+```
+
+## Cicli di Isteresi
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+data <- data.frame(Sarr,Temp2)
+plot <- ggplot(data,aes(Sarr,Temp2))+geom_point(aes(Sarr, Temp2),colour = 'yellow')+ylab("<T>")+xlab("S_2(t)")+ggtitle("Temperatura media vs. Radiazione incidente oscillante sinusoidale")
+plot
+```
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+#W <- matrix(NA, nrow=90, ncol=200)
+Temp5 <- rep(0,19001)
+T5 <- gauss(Zones,0,50,31.6)
+a <- alb(T5,ai,ab)
+Sarr <- rep(0,19001) 
+for(j in c(0:19000)){
+  S <- Sun5(j)
+  Rin <- 1370*Incident(S,SunWt)
+  for(i in c(1:60))
+  {Tcos <- cosZones*T5
+  Tm <- sum(Tcos)/sum(cosZones)
+  T5 <- (Rin*(1-a)+K*Tm-A) / (B+K)
+  a <- alb(T5,ai,ab)
+  }
+  Sarr[j+1] <- Sun5(j)
+  #W[,j] <- T5
+  J[j] <- j
+  Temp5[j+1] <- Tm
+}
+
+
+dataw <- data.frame(Sarr,Temp5)
+ploT5 <- ggplot(dataw,aes(Sarr,Temp5))+geom_point(aes(Sarr, Temp5),colour = 'yellow')+ylab("<T>")+xlab("S_5(t)")+ggtitle("Temperatura media vs. Radiazione incidente oscillante lineare")
+ploT5
+```
