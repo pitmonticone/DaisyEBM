@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/502365/62420df2a80045ed821a5e634b1cb11f
+bundleId: https://api.rpubs.com/api/v1/document/502365/62420df2a80045ed821a5e634b1cb11f
+url: http://rpubs.com/pietromonticoneR/502365
+when: 1559767641.54422

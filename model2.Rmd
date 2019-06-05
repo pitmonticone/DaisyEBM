@@ -55,15 +55,14 @@ Sun1 <- function(x,a){a*x/100}
 Sun2 <- function(x){1370*(sinpi((x+90)/180))^2}
 Sun3 <- function(x){1370-(((1370)/(sqrt(2*pi*1^2)))*exp(-(x-50)^2/(2*1^2)))}
 Sun4 <- function(x){ifelse(x==50,1370/3,1370)}
-#Sun5 <- function(x){(1/10000) * (abs(x-15000)+2500)}
-Sun5 <- function(x){3.5*(sinpi((x/100+90)/180))^2+0.2}
+Sun5 <- function(x){(1/100) * (abs(x-150)+25)}
 Incident <- function(x,y){x*y/4}
 Step <- function(x,c){ifelse(x<c, 0.6, 0.3)}
 alb <- function(x,a,b){
   (-exp(2.2*x+10)/(exp(2.2*x+10)+1))*(a-b)+a}
 ```
 
-$$ S_1(t)= \frac{1370}{100}x \\ S_2(t)= 1370(\sin^2(x+90)) \\ S_3(t)= 1370\Big(1-\frac{1}{\sqrt{2\pi}}e^{-(x-50)^2/2}\Big) \\ S_4(t)=1370\Big(1-\frac{1}{3}\delta(t-50)\Big) \\ S_5(t)=\frac{1}{10000}(|x-15000|+2500)  $$
+$$ S_1(t)= \frac{1370}{100}x \\ S_2(t)= 1370(\sin^2(x+90)) \\ S_3(t)= 1370\Big(1-\frac{1}{\sqrt{2\pi}}e^{-(x-50)^2/2}\Big) \\ S_4(t)=1370\Big(1-\frac{1}{3}\delta(t-50)\Big) \\ S_5(t)=\frac{1}{100}(|x-150|+25)  $$
 
 #Introduction
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
@@ -247,10 +246,10 @@ plot
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 #W <- matrix(NA, nrow=90, ncol=200)
-Temp5 <- rep(0,19001)
+Temp5 <- rep(0,250)
 T5 <- gauss(Zones,0,50,31.6)
 a <- alb(T5,ai,ab)
-Sarr <- rep(0,19001) 
+Sarr <- rep(0,250) 
 for(j in c(0:19000)){
   S <- Sun5(j)
   Rin <- 1370*Incident(S,SunWt)
@@ -260,10 +259,10 @@ for(j in c(0:19000)){
   T5 <- (Rin*(1-a)+K*Tm-A) / (B+K)
   a <- alb(T5,ai,ab)
   }
-  Sarr[j+1] <- Sun5(j)
+  Sarr[j] <- Sun5(j)
   #W[,j] <- T5
   J[j] <- j
-  Temp5[j+1] <- Tm
+  Temp5[j] <- Tm
 }
 
 
