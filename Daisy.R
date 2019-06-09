@@ -50,6 +50,8 @@ I <- rep(0,500)
 TEMP <- matrix(NA, nrow=90, ncol=500)
 
 for(i in c(1:500)) {
+S <- Sun(i)
+Rin <- Incident(S,SunWt)
 Tcos <- cosZones*T
 Tm <- sum(Tcos)/sum(cosZones)
 T <- (Rin*(1-a)+K*Tm-A) / (B+K)
