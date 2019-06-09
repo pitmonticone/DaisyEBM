@@ -2,6 +2,13 @@
 library(tidyverse)
 library(plotly)
 
+
+
+#Sun <- function(x){1370*(1+0.1*cospi(x/180))}
+
+
+
+
 #Inpit Parameters
 S <- 1370
 A <- 204
