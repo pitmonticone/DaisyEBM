@@ -1,7 +1,8 @@
-# INPUT PARAMETERS
-
+#Packages
 library(tidyverse)
 library(plotly)
+
+#Inpit Parameters
 S <- 1370
 A <- 204
 B <- 2.17
@@ -12,27 +13,27 @@ aW <- 0.75
 aB <- 0.25
 #aU <- 0.4
 c <- 5
-k <- 0.003265
+k <- 0.003265*0.75
 T0 <- 20
-D <- 0.3 #death
+D <- 0.3 # Death Rate
 
 Zones <- seq(-89, 89, by = 2)
 
+#Functions
 Func <-  function(x){
   0.7768699*cos(0.0164348*x)^2+0.4617747
 }
 gauss <-  function(x,m,sd,b){
   ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
 }
-
 Incident <- function(x,y){x*y/4}
 alb <- function(x,a,b){ (-exp(1.6*x+10)/(exp(1.6*x+10)+1))*(a-b)+a} #naked
 
-Ti <- gauss(Zones,0,50,31.6)
+#Initialization
 cosZones <- abs(cospi(Zones/180))
 SunWt <- Func(Zones)
 Rin <- Incident(S,SunWt)
-T <- gauss(Zones,0,50,31.6)
+T <- gauss(Zones,0,50,31.6)-6
 
 w <- rep(0.5,length(Zones))
 b <- rep(0.2,length(Zones))
@@ -71,7 +72,7 @@ I[i] <- i
 Tarr[i] <- T[45]
 } 
 
-plot <- ggplot(data.frame(Zones,w,b,T))+geom_line(aes(Zones,w),color="red")+geom_line(aes(Zones,b),color="blue")+geom_line(aes(Zones,T),color="green")
+plot <- ggplot(data.frame(Zones,w,b,u,T))+geom_line(aes(Zones,w,color="white"))+geom_line(aes(Zones,b,color="Black"),color="black")+geom_line(aes(Zones,u),color="brown")+geom_line(aes(Zones,T/5),color="green")
 plot
 plot2 <- ggplot(data.frame(I,Barr,Warr,Uarr,Tarr))+geom_line(aes(I,Barr),color="black")+ geom_line(aes(I,Warr),color="white")+ geom_line(aes(I,Uarr),color="brown")+geom_line(aes(I,Tarr/25),color="pink")
 plot2
