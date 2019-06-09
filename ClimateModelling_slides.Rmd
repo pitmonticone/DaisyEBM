@@ -68,6 +68,7 @@ mono_accent(base_color = "#342c5c",
 - Introduction
   - Packages
   - Input Parameters
+  - Fit from Textbook Spreadsheet
   - Functions
 - Run 0
 - Run 1
@@ -91,17 +92,28 @@ B <- 2.17
 K <- 3.86
 ai <- 0.62
 ab <- 0.25
-#Tl <- -10
-#Tu <- 24
 Temperature <- rep(0,300)
 Temp <- rep(0,100)
 Temp2 <- rep(0,180)
-Temp5 <- rep(0,200)
+Temp5 <- rep(0,300)
 J <- rep(0,100)
 Albedo <- rep(0,300)
 t <- c(1:300)
 Zones <- seq(-89, 89, by = 2)
 ```
+---
+## Fit from Textbook Spreadsheet
+.small[
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE,out.width="50%"}
+zones <- c(85,75,65,55,45,35,25,15,6)
+coszones <- cospi(zones/180)
+sunWt <- c(0.5,0.531,0.624,0.77,0.892,1.021,1.12,1.189,1.219)
+df <- data.frame(zones,sunWt)
+f <-  function(zones,d,n,k){ d*cos(n*zones)^2+k }
+Fit <-  nls(sunWt ~ f(zones,d,n,k),data= df, start=list(d=1,n=0.015,k=0.3))
+ggplot(df, aes(zones,sunWt))+geom_point()+geom_smooth(aes(y=f(zones,0.7768699,0.0164348,0.4617747)))+xlab("Latitude")+ylab("Solar Weight Factor")
+```
+]
 ---
 # Functions
 .pull-left[
@@ -372,7 +384,7 @@ for(j in c(0:250)){
 .small[
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 dataw <- data.frame(Sarr,Temp5)
-plot5 <- ggplot(dataw,aes(Sarr,Temp5))+geom_point(aes(Sarr, Temp5),colour = 'yellow')+ylab("<T>")+xlab("S_5(t)")+ggtitle("Temperatura media vs. Radiazione incidente oscillante lineare")
+plot5 <- ggplot(dataw,aes(Sarr,Temp5,group=1))+geom_point(aes(Sarr, Temp5),colour = 'yellow')+geom_segment(aes(x = Sarr[89], y = Temp5[89], xend = Sarr[90], yend = Temp5[90]),colour = 'yellow')+geom_segment(aes(x = Sarr[258], y = Temp5[258], xend = Sarr[259], yend = Temp5[259]),colour = 'yellow')+ylab("<T>")+xlab("S_5(t)")+ggtitle("Temperatura media vs. Radiazione incidente oscillante lineare")
 ```
 ]
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
