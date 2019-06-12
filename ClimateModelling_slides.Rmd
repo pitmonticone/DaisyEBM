@@ -407,6 +407,7 @@ T0 <- 20
 D <- 0.3 # Death Rate
 Zones <- seq(-89, 89, by = 2)
 ```
+---
 ## Functions
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 Func <-  function(x){
