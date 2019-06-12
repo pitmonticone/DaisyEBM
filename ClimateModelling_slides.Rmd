@@ -482,7 +482,7 @@ plot_ly(z=~TEMP)%>% add_surface() %>% layout(title="Without Daisies",
 ```
 ]
 ---
-## EBM without Daisies
+## EBM with Daisies
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 a <- w*aW+b*aB+u*alb(T,0.62,0.25)
 T <- gauss(Zones,0,50,31.6)-6
