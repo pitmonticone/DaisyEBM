@@ -437,6 +437,7 @@ Tarr <- rep(0,500)
 I <- rep(0,500)
 TEMP <- matrix(NA, nrow=90, ncol=500)
 ```
+---
 ## EBM without Daisies
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 for(i in c(1:500)) {
