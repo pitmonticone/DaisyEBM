@@ -14,7 +14,10 @@ knitr::opts_chunk$set(
 	echo = FALSE,
 	message = FALSE,
 	warning = FALSE
-)
+	)
+
+library(tidyverse)
+library(knitr)
 ```
 
 # Theoretical Climate Physics [Cassardo]
@@ -99,3 +102,4 @@ knitr::opts_chunk$set(
 ### Question 10 
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
+
