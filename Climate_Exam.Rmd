@@ -1,0 +1,101 @@
+---
+title: "Climate Physics Exam"
+author: "Pietro Monticone & Davide Orsenigo"
+date: '`r Sys.Date()` | Turin University'
+output:
+ prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+# Theoretical Climate Physics [Cassardo]
+
+### Question 1
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 2 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 3 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 4 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 5 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 6
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 7 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 8 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 9 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 10 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+# Computational Climate Physics [Palazzi]
+### Question 1
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 2 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 3 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 4 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 5 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 6
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 7 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 8 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 9 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
+
+### Question 10 
+* Sources (Textbooks,IPCC,Papers,Slides)
+* Answer
