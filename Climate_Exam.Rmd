@@ -102,4 +102,3 @@ library(knitr)
 ### Question 10 
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
-
