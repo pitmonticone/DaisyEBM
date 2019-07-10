@@ -23,82 +23,169 @@ library(knitr)
 # Theoretical Climate Physics [Cassardo]
 
 ### Question 1
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Explain the difference between weather and climate, also in terms of predictability. How you will answer to the following question? “if meteorological models are unable to predict weather after two weeks, how climate models can predict the climatic conditions of next century?”
+
+- Sources (Textbooks,IPCC,Papers,Slides)
+
+* There are essential differences between weather and climate, even though they are inextricably linked. Weather refers to conditions in the atmosphere at any one time. Climate, in contrast, can be thought of as the “average weather” for a particular region over some period of time. 
+*spazio-temporalmente locale (regionale,nazionale ; 0-5 gg) vs. spaziotemporalmente locale&globale (regionale,continentale,globale; 30y min)
+* Dualismo Meccanica Statistica (dinamica non lineare caotica) -Termodinamica (dinamica efficace deterministica e stazionaria all'eq)
+* meteo è quasi-totalmente atmosferico (accoppimento tra sfere irrilevante su scala meteo) ; clima è sistema dinamico complesso (accoppimento tra sfere CRIO-ATMO-BIO-LITOSFERA rilevante-determinante su scala clima) 
+* You dress for the weather and build a house for the climate. Or how about: Cli- mate is what you expect; weather is what you get.
+
+
 
 ### Question 2 
+List the main atmospheric components influencing the climate.
+
+Explain the subdivision of atmosphere in layers based on mean temperature vertical profile, with a short comment on each layer.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 3 
+Write the state equation for dry air and comment on the constant of dry gas.
+Define the conditions of stability for dry air.
+Write and comment the Clausius-Clapeyron equation, and discuss on ice and supercooled water.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 4 
+ATM FLOW
+
+Explain the general aspects of the atmospheric general circulation, by explicating the main mechanisms and the most important characteristics and implications.
+
+The mid-latitude atmospheric flow: discuss the main characteristics of the mean meridional circulation and the role of the Rossby waves as source of the extratropical storms.
+
+Describe the atmospheric transport of energy, water and momentum along the meridians (also using the following figures) by the eddies, also explaining what Rossby waves and eddies are, and their contribution to the transport.
+
+Describe in detail the share of the energy transport between mean meridional circulation and eddies (also using the following
+Describe the ICTZ and the Hadley cells, commenting on the typical climate in the tropical and equatorial latitudes.figure), also shortly explaining what Rossby waves and eddies are.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 5 
+OCEAN 
+ Discuss the role of the oceans in the climate.
+13. The oceanic environment: describe the surface distribution and the vertical profiles of temperature and salinity, evidencing the main water movements and transport, also considering the presence of Arctic and Antarctic bottom water.
+14. Discuss the contribution of Mediterranean sea in the Atlantic, exemplifying exchanges and patterns of salinity and temperature.
+15. Justify the presence of the asymmetric gyres starting from the discussion about the Ekman theory.
+16. The relation between thermohaline circulation and the structure of the gyres in the oceans, and its effects on climate, also considering the studies on thermohaline collapse.
+17. Describe the phenomenon ENSO (El Niño – Southern Oscillation), also in terms of the movements stimulated by the Ekman theory, and the correlated climatic modifications.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 6
+Comment the characteristics and role of the cryosphere on the climate.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 7 
+Comment the characteristics and role of the biosphere on the climate.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 8 
+ List at least three techniques useful to derive proxy data in climate science, and explain which kind of data is possible to determine using each technique.
+21. The method of connecting relative variations in 18O (18O) and variations of temperature.
+
+The faint sun paradox and the snowball Earth represent two (or more) moments in which solar radiation on Earth was insufficient to produce a mean temperature similar to the actual one. In both cases, greenhouse effect helped to solve the impasse. After introducing the greenhouse effect (natural and anthropogenic), comment these situations.
+
+Comment the following figure, also justifying the different timings of beginning and ending of the glacial periods.
+
+ Discuss the climatic variations in the Younger Dryas period, mentioning the most common explanation.
+ 
+26. Real cycles and Milankovitch cycles: a discussion.
+
+27. Comment on the glaciations occurred in the last 500000 years, mentioning the main variables (temperature, CO2, ...) and their values.
+28. Intercomparison between Antarctica and Greenland δ18O trends: a discussion.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
 ### Question 9 
+The water in the Earth system in all its three phases, and the hydrological cycle.
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
 
-### Question 10 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
 
 # Computational Climate Physics [Palazzi]
-### Question 1
+ 
 * Sources (Textbooks,IPCC,Papers,Slides)
 * Answer
+
+### Question 1
+Descrivere il bilancio radiativo di energia nel sistema terra atmosfera illustrandone le principali componenti. Che differenza esiste tra la temperatura superficiale del pianeta e la sua temperatura di emissione? A cosa è dovuta questa differenza? Come cambiano la temperatura superficiale e quella atmosferica in funzione della temperatura di emissione in un semplice modello tipo “energy-balance” in cui varia l’opacità dell’atmosfera rispetto all’assorbimento della radiazione infrarossa emessa dalla superficie?
 
 ### Question 2 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Quale profilo verticale di temperatura in atmosfera risulta dal semplice bilancio radiativo? Quali sono le principali criticità che si riscontrano? Cosa occorre includere nel modello per ottenere temperature più realistiche e un profilo convettivamente stabile? Descrivere quale è il ruolo della convezione in atmosfera e come viene trattata nei modelli, dai più “semplici” a quelli accoppiati, in mancanza di una descrizione esplicita del processo.
 
 ### Question 3 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Che cosa si intende per parametrizzazione? Quale è il legame tra parametrizzazioni e risoluzione di un modello? Discutere anche quali sono le assunzioni alla base del processo della parametrizzazione.
 
 ### Question 4 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Quali sono le principali componenti e/o processi che devono essere simulati in un modello climatico tridimensionale? Come viene realizzato il loro accoppiamento? Descrivere almeno una componente, cercando di includere nella trattazione il maggior numero di elementi utili a comprendere il problema.
 
 ### Question 5 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Che cosa è un modello climatico regionale (ottenuto mediante un downscaling dinamico) e quali sono i vantaggi e gli svantaggi del suo utilizzo? Descrivere quali sono i requisiti per effettuare simulazioni climatiche attendibili con un modello regionale di clima. Un modello regionale di clima può “girare” da solo? Motivare la risposta
 
 ### Question 6
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Cosa si intende per gerarchia o spettro di modelli? Quali sono i vari tipi di modello, perché esistono e qual è il loro principale utilizzo?
 
 ### Question 7 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Quale è la differenza tra un modello di tipo “Energy Balance” e un modello “Radiativo- Convettivo”? Descrivere cosa viene parametrizzato e cosa viene trattato esplicitamente nell’uno e nell’altro caso.
+
 
 ### Question 8 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Descrivere esaurientemente almeno un’applicazione dell’uso degli Energy Balance Models,dopo aver descritto le principali caratteristiche di questo tipo di modello.
 
 ### Question 9 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+In cosa consiste la validazione di un modello di clima? Illustrare i modi principali in cui un modello viene testato e validato e fare qualche esempio
 
 ### Question 10 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+Quale è il ruolo delle osservazioni nelle fasi di formulazione , costruzione e validazione di un modello climatico accoppiato? Aiutarsi con Figura. 
+
+### Question 11
+Cosa sono i modelli climatici a complessità intermedia? Descrivere il loro principale utilizzo e spiegare perchè può essere utile farne uso nonostante siano più semplici dei modelli globali o del sistema terra. (Effective models: lower resolution, higher computational power, faster computation)
+
+### Question 12
+Discutere, con maggior dettaglio possibile, un argomento a piacere, che si è meglio compreso e che si ritiene di particolae interesse, che è stato trattato nella parte di corso relativa alla modellistica del clima (parte b)
+
+
+### Question 13
+Molte differenze tra i modelli possono essere attribuite, insieme ad altre cause, a differenze nel modo in cui vengono parametrizzati i processi sotto-griglia. Quale tecnica viene principalmente usata, mutuata dalla modellistica previsionale meteorologica, per esplorare l’incertezza nei modelli climatici? Quali tipi di ensemble esistono?
+
+### Question 14
+Che cosa sono le condizioni al contorno di un modello climatico? Discutere perché i modelli di clima vengono definiti un “problema di condizioni al contorno” distinguendoli dalle previsioni meteorologiche. (initial value vs. boundary value problem )
+
+### Question 15
+Cosa è Daisyworld? Discutere quale fondamentale componente/processo è descritto in questo modello.
+
+### Question 16
+Perché il clima sulla terra varia? Descrivere il ruolo delle forzanti naturali e antropiche e descrivere cosa si intende per variabilità dovuta alla dinamica interna del clima.
+
+### Question 17
+Quali sono le specificità del clima sulla terra? Discuterne anche nell’ottica della modellistica climatica.
+
+### Question 18
+Discutere il più esaurientemente possibile la seguente figura, cercando di includere nella discussione vari aspetti affrontati durante il corso. (Esempi: ruolo delle forzanti naturali e antropiche, attribuzione, valore degli ensemble modellistici, etc.)
+
+
+
+
+
+Figura 11. Confronto fra le anomalie medie di temperatura globale misurate (curva nera) e simulate da un ensemble di modelli climatici (curve colorate). Le anomalie sono calcolate rispetto alla temperatura media nel periodo 1901-1950. Nel pannello a, le simulazioni includono sia le forzanti naturali che quelle di origine antropica (gas serra); le curve sottili rappresentano 58 simulazioni ottenute con 14 modelli diversi e la curva spessa indica la media su tutte le simulazioni e tutti i modelli. Nel pannello b, le simulazioni includono soltanto le forzanti naturali; le curve sottili rappresentano 19 simulazioni ottenute con 5 modelli diversi e la curva spessa indica la media su tutte le simulazioni e tutti i modelli. Le linee grigie verticali rappresentano le date delle principali eruzioni vulcaniche del XX secolo. (Figura 9.5 del Rapporto del Working Group I, IPCC 2007, WGI, capitolo 9, http://www.ipcc.ch/pdf/assessment-report/ar4/wg1/ar4-wg1-chapter9.pdf)
+Detto ciò, è importante sottolineare che il problema della definizione dei limiti alla predicibilità del clima è tuttora un importante argomento di ricerca. A questo proposito, occorre ricordare la grande differenza esistente fra una proiezione climatica e una previsione meteorologica. Una previsione meteorologica deterministica tenta di prevedere lo stato del tempo atmosferico in un certo istante futuro (per esempio domani a mezzogiorno) a partire dalle nostre conoscenze dello stato iniziale (per esempio adesso). Le previsioni meteorologiche hanno una limitazione intrinseca, dovuta al fatto che l'atmosfera è caratterizzata da comportamento caotico, con un limite temporale alla predicibilità deterministica. Diverse stime pongono questo limite teorico intorno alle due settimane o anche meno: ovvero, oltre questo intervallo di tempo non è possibile, neppure in linea di
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
