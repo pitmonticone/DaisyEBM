@@ -108,9 +108,22 @@ The water in the Earth system in all its three phases, and the hydrological cycl
 
 
 # Computational Climate Physics [Palazzi]
- 
-* Sources (Textbooks,IPCC,Papers,Slides)
-* Answer
+
+* CLIMATE / EARTH SYSTEM: Open (extrinsically forced), out-of-equilibrium, complex, multiplex (multi-layered), heterogeneous, intrinsically non linear dynamical system $(\mathcal{T},M,\Phi)$ endowed with internal feedbacks (positive and negative), cycles (e.g. water, carbon,...) and composed of interconnected subsystems: 
+    + Atmosphere
+    + Hydrosphere
+    + Litosphere
+    + Biosphere (Anthroposphere,...)
+    + Cryosphere
+    
+* METEOROLOGY vs. CLIMATOLOGY: 
+     + "Weather is what you get, Climate is what you expect"
+     + "Meteorology informs you about how to dress, Climatology about how to build your house"
+     + Short time-scale (max 5 days) vs. Long time-scale (min 30 years)
+     + Meteorological observables ($T,P,h,c,w,...$) vs. Climatological observables ($\bar{T}$,$\bar{P}$...)
+     + 1-system (atmospheric) dynamics vs. multi-subsystem coevolution
+     + Non linear chaotic deterministic evolution/trajectory vs. coarse-grained ensemble average evolution ($CM\to SM\to TD$ $\sim$ $M\to S\to C$)
+     + Meteorological simulations are solutions to initial-value problem (boundaries are constant at short time-scale) vs. Climatological simulations are solutions to boundary-value problem (boundaries are dynamical at long time-scale)
 
 ### Question 1
 Descrivere il bilancio radiativo di energia nel sistema terra atmosfera illustrandone le principali componenti. Che differenza esiste tra la temperatura superficiale del pianeta e la sua temperatura di emissione? A cosa è dovuta questa differenza? Come cambiano la temperatura superficiale e quella atmosferica in funzione della temperatura di emissione in un semplice modello tipo “energy-balance” in cui varia l’opacità dell’atmosfera rispetto all’assorbimento della radiazione infrarossa emessa dalla superficie?
@@ -160,10 +173,45 @@ Che cosa sono le condizioni al contorno di un modello climatico? Discutere perch
 Cosa è Daisyworld? Discutere quale fondamentale componente/processo è descritto in questo modello.
 
 ### Question 16
-Perché il clima sulla terra varia? Descrivere il ruolo delle forzanti naturali e antropiche e descrivere cosa si intende per variabilità dovuta alla dinamica interna del clima.
+Earth Climate Variability: variation of climate state due to
+* Internal/intrinsic dynamics
+     + Circulation : thermo-fluid dynamical flows due to ocean-atmosphere coupling (water cycles)
+     + Teleconnection
+     + Feedback mechanisms
+
+Il clima della terra ha due proprietà apparentemente in contrasto tra loro:
+Non è mai fisso ma le variabili “importanti” rimangono in un intervallo limitato, che da tre miliardi di anni circa ha reso possibile la vita (anche se in forme
+diverse da quelle che conosciamo)
+Perchè il clima sulla terra varia, perchè non varia troppo?
+
+Possiede un inviluppo fluido che la circonda (atmosfera + oceano).
+Atmosfera e oceano perme.ono una efficace ridistribuzione del calore (a.raverso i ven8 e la circolazione atmosferica e corren8 oceaniche) dalle regioni dove c’è un accumulo di calore (basse la8tudini) a quelle dove c’è un deficit (alte la8tudini) 
+
+Sulla Terra le condizioni sono quelle prossime al punto triplo dell’acqua,
+in cui fase solida, liquida e gassosa coesistono. Ciò da luogo a passaggi di fase con conseguente rilascio e assorbimento di calore latente e a tutta la termodinamica che ne consegue. L’acqua nelle sue varie forme circola attraverso il sistema dando luogo al ciclo idrologico, che influenza ed è influenzato dal clima stesso.
+
+Pianeta popolato di organismi viven1 (tra cui l’uomo) —> interazione clima- biosfera è a doppio senso!
+- Effetti climatici indotti dalla vegetazione terrestre (retroazione albedo-precipitazione, evapotraspirazione-precipitazione, ondate di calore)
+- Contributo degli ecosistemi marini alle interazioni e retroazioni fra clima e biosfera (acidificazione oceani e CO2)
+- Produzione di sostanze volatili e aerosol di origine biogenica che determinano la composizione e concentrazione degli aerosol atmosferici e hanno un effetto sulle nubi
+- Coevoluzione clima-biosfera, ipotesi Gaia (J.Lovelock)
+
+La variabilità del clima
+La variazione nello stato medio e in altre statistiche (deviazione standard, occorrenza degli estremi, etc.) che descrivono il clima su tutte le scale al di là di quelle dei singoli eventi meteorologici (def. IPCC).
+Il clima evolve e cambia a causa:
+Variazioni dovute alla propria dinamica interna
+Variazioni causate dall’azione di fattori esterni (FORZANTI) che possono essere di origine naturale o antropica
+
+La variabilità interna
+• Circolazioni: Il calore viene ridistribuito dalle basse alle alte latitudini grazie ai processi di trasporto nell’atmosfera (venti) e nell’oceano (correnti).
+Le differenze di temperatura tra equatore e poli sono molto più limitate di quello che sarebbero in assenza di atmosfera e oceani
+• Teleconnessioni
+• Meccanismi di retroazione
 
 ### Question 17
 Quali sono le specificità del clima sulla terra? Discuterne anche nell’ottica della modellistica climatica.
+
+
 
 ### Question 18
 Discutere il più esaurientemente possibile la seguente figura, cercando di includere nella discussione vari aspetti affrontati durante il corso. (Esempi: ruolo delle forzanti naturali e antropiche, attribuzione, valore degli ensemble modellistici, etc.)
