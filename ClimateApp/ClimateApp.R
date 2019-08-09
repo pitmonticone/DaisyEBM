@@ -78,8 +78,10 @@ ui <- fluidPage(
 
 
 # SERVER ----
-server <- function(input, output) {
-
+server <- function(input, output,session) {
+  
+  
+output$plot_albedo <- renderPlot({ 
   Func <-  function(x){
     0.7768699*cos(0.0164348*x)^2+0.4617747
   }
@@ -96,8 +98,6 @@ server <- function(input, output) {
   Step <- function(x,c){ifelse(x<c, 0.6, 0.3)}
   alb <- function(x,a,b){
     (-exp(2.2*x+10)/(exp(2.2*x+10)+1))*(a-b)+a}
-  
-output$plot_albedo <- renderPlot({ 
   Temperature <- rep(0,300)
   Temp <- rep(0,100)
   Temp2 <- rep(0,180)
