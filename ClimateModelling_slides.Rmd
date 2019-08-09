@@ -146,7 +146,7 @@ $$S_6(t)=1370\Big(1+\frac{1}{10} cos(x)\Big) $$
 ---
 $$ a(T)=\frac{e^{2.2T+10}}{e^{2.2T+10}+1}(b-a)+a $$
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
-ggplot(data.frame(x= seq(-15,15, by=0.1),y=alb(seq(-15,15, by=0.1),0.62,0.25)))+geom_line(aes(x,y),colour="blue")+xlab("Temperature")+ylab("Albedo")
+ggplot(data.frame(x= seq(-15,15, by=0.1),y=alb(seq(-15,15, by=0.1),ai,ab)))+geom_line(aes(x,y),colour="blue")+xlab("Temperature")+ylab("Albedo")
 ```
 ---
 # Introduction
@@ -165,7 +165,7 @@ for(i in c(1:300)) {
   Tcos <- cosZones*T
   Tm <- sum(Tcos)/sum(cosZones)
   T <- (Rin*(1-a)+K*Tm-A) / (B+K)
-  a <- alb(T,0.62,0.25)
+  a <- alb(T,ai,ab)
   Temperature[i] <-  Tm 
 } 
 ```
@@ -438,7 +438,7 @@ T <- gauss(Zones,0,50,31.6)-6
 w <- rep(0.5,length(Zones))
 b <- rep(0.2,length(Zones))
 u <- rep(0.3,length(Zones))
-a <- w*aW+b*aB+u*alb(T,0.62,0.25)
+a <- w*aW+b*aB+u*alb(T,ai,ab)
 Barr <- rep(0,500)
 Warr <- rep(0,500)
 Uarr <- rep(0,500)
