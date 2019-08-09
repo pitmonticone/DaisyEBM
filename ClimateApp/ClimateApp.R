@@ -6,7 +6,8 @@ library(scales)
 library(shinythemes) #---> themeSelector()
 
 
-# FUNCTIONS ----
+# INITIALIZATION ----
+
 Func <-  function(x){
   0.7768699*cos(0.0164348*x)^2+0.4617747
 }
@@ -34,10 +35,23 @@ Zones <- seq(-89, 89, by = 2)
 Ti <- gauss(Zones,0,50,31.6)
 cosZones <- abs(cospi(Zones/180))
 SunWt <- Func(Zones)
+Barr <- rep(0,500)
+Warr <- rep(0,500)
+Uarr <- rep(0,500)
+Tarr <- rep(0,500)
 w <- rep(0.5,length(Zones))
 b <- rep(0.2,length(Zones))
 u <- rep(0.3,length(Zones))
-
+I <- rep(0,500)
+TEMP <- matrix(NA, nrow=90, ncol=500)
+TEMP1 <- matrix(NA, nrow=90, ncol=100)
+T2 <- gauss(Zones,0,50,31.6)
+TEMP2 <- matrix(NA, nrow=90, ncol=180)
+Sarr <- rep(0,180) 
+TEMP4 <- matrix(NA, nrow=90, ncol=200)
+T4 <- gauss(Zones,0,50,31.6)
+TEMP3 <- matrix(NA, nrow=90, ncol=200)
+T3 <- gauss(Zones,0,50,31.6)
 
 
 
@@ -106,15 +120,12 @@ ui <- fluidPage(
         tabPanel("Run 2", plotOutput("plot1_Run2"),plotlyOutput("plot2_Run2")),
         tabPanel("Run 3 & 4", plotOutput("plot1_Run3"),plotOutput("plot1_Run4"),plotlyOutput("plot2_Run3"),plotlyOutput("plot2_Run4")),
         tabPanel("Hysteresis Cycles", plotOutput("plot1_Hysteresis"), plotOutput("plot2_Hysteresis")),
-        tabPanel("Daisy EBM", plotOutput("plot1_Daisy"), plotOutput("plot2_Daisy"), plotlyOutput("plot3_Daisy"),
-                 plotOutput("plot4_Daisy"), plotOutput("plot5_Daisy"), plotlyOutput("plot6_Daisy") )
+        tabPanel("Without Daisies", plotOutput("plot1_noDaisy"), plotOutput("plot2_noDaisy"), plotlyOutput("plot3_noDaisy")),
+        tabPanel("With Daisies", plotOutput("plot1_Daisy"), plotOutput("plot2_Daisy"), plotlyOutput("plot3_Daisy") )
       )
     )
   )
 )
-
-
-
 
 # SERVER ----
 server <- function(input, output,session) {
@@ -125,9 +136,6 @@ server <- function(input, output,session) {
   
   output$plot1_Run0 <- renderPlot({ 
     
-    Ti <- gauss(Zones,0,50,31.6)
-    cosZones <- abs(cospi(Zones/180))
-    SunWt <- Func(Zones)
     Rin <- Incident(input$S,SunWt)
     T <- gauss(Zones,0,50,31.6)
     a <- alb(T,input$ai,input$ab)
@@ -147,9 +155,6 @@ server <- function(input, output,session) {
   })
   
   output$plot2_Run0 <- renderPlot({ 
-    Ti <- gauss(Zones,0,50,31.6)
-    cosZones <- abs(cospi(Zones/180))
-    SunWt <- Func(Zones)
     Rin <- Incident(input$S,SunWt)
     T <- gauss(Zones,0,50,31.6)
     a <- alb(T,input$ai,input$ab)
@@ -166,7 +171,6 @@ server <- function(input, output,session) {
   })
   
   output$plot1_Run1 <- renderPlot({
-    TEMP1 <- matrix(NA, nrow=90, ncol=100)
     for(j in c(1:100)){
       T <- gauss(Zones,0,50,31.6)
       a <- alb(T,input$ai,input$ab)
@@ -189,7 +193,6 @@ server <- function(input, output,session) {
   })
   
   output$plot2_Run1 <- renderPlotly({
-    TEMP1 <- matrix(NA, nrow=90, ncol=100)
     for(j in c(1:100)){
       T <- gauss(Zones,0,50,31.6)
       a <- alb(T,input$ai,input$ab)
@@ -205,6 +208,7 @@ server <- function(input, output,session) {
       J[j] <- j
       Temp[j] <- Tm
     }
+    
     plot_ly(z=~TEMP1)%>% add_surface() %>%   layout(
       title = "With Initialization", scene = list(
         xaxis = list(title = "S/100"),
@@ -213,10 +217,8 @@ server <- function(input, output,session) {
   })
   
   output$plot1_Run2 <- renderPlot({
-    T2 <- gauss(Zones,0,50,31.6)
-    TEMP2 <- matrix(NA, nrow=90, ncol=180)
     a <- alb(T2,input$ai,input$ab)
-    Sarr <- rep(0,180) 
+
     for(j in c(1:180)){
       S <- Sun2(j)
       Rin <- Incident(S,SunWt)
@@ -237,10 +239,8 @@ server <- function(input, output,session) {
   })
   
   output$plot2_Run2 <- renderPlotly({
-    T2 <- gauss(Zones,0,50,31.6)
-    TEMP2 <- matrix(NA, nrow=90, ncol=180)
     a <- alb(T2,input$ai,input$ab)
-    Sarr <- rep(0,180) 
+    
     for(j in c(1:180)){
       S <- Sun2(j)
       Rin <- Incident(S,SunWt)
@@ -288,9 +288,6 @@ server <- function(input, output,session) {
   })
   
   output$plot1_Run4 <- renderPlot({
-    
-    TEMP4 <- matrix(NA, nrow=90, ncol=200)
-    T4 <- gauss(Zones,0,50,31.6)
     a <- alb(T4,input$ai,input$ab)
     
     for(j in c(1:200)){
@@ -312,8 +309,6 @@ server <- function(input, output,session) {
   })
   
   output$plot2_Run3 <- renderPlotly({
-    TEMP3 <- matrix(NA, nrow=90, ncol=200)
-    T3 <- gauss(Zones,0,50,31.6)
     a <- alb(T3,input$ai,input$ab)
     
     for(j in c(1:200)){
@@ -338,8 +333,6 @@ server <- function(input, output,session) {
   })
   
   output$plot2_Run4 <- renderPlotly({
-    TEMP4 <- matrix(NA, nrow=90, ncol=200)
-    T4 <- gauss(Zones,0,50,31.6)
     a <- alb(T4,input$ai,input$ab)
     
     for(j in c(1:200)){
@@ -410,21 +403,16 @@ server <- function(input, output,session) {
     ggplot(dataw,aes(Sarr,Temp5,group=1))+geom_point(aes(Sarr, Temp5),colour = 'yellow')+geom_segment(aes(x = Sarr[89], y = Temp5[89], xend = Sarr[90], yend = Temp5[90]),colour = 'yellow')+geom_segment(aes(x = Sarr[258], y = Temp5[258], xend = Sarr[259], yend = Temp5[259]),colour = 'yellow')+ylab("Mean Temperature")+xlab("S_5(t)")+ggtitle("Mean temperature vs. Linearly Fluctuating Incoming Radiation")
   })
   
-  output$plot1_Daisy <- renderPlot({
+  output$plot1_noDaisy <- renderPlot({
     
     SunWt <- Func(Zones)
     Rin <- Incident(input$S,SunWt)
     T <- gauss(Zones,0,50,31.6)-6
     
+    SunWt <- Func(Zones)
+    Rin <- Incident(input$S,SunWt)
+    T <- gauss(Zones,0,50,31.6)-6
     a <- w*input$aW+b*input$aB+u*alb(T,input$ai,input$ab)
-    
-    Barr <- rep(0,500)
-    Warr <- rep(0,500)
-    Uarr <- rep(0,500)
-    Tarr <- rep(0,500)
-    I <- rep(0,500)
-    
-    TEMP <- matrix(NA, nrow=90, ncol=500)
     
     for(i in c(1:500)) {
       S <- Sun6(i)  # oppure costante S <- 1370
@@ -441,23 +429,15 @@ server <- function(input, output,session) {
     ggplot(data.frame(Zones,w,b,u,T),aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("Without Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
   })
   
-  output$plot2_Daisy <- renderPlot({
+  output$plot2_noDaisy <- renderPlot({
     SunWt <- Func(Zones)
     Rin <- Incident(input$S,SunWt)
     T <- gauss(Zones,0,50,31.6)-6
     
-    w <- rep(0.5,length(Zones))
-    b <- rep(0.2,length(Zones))
-    u <- rep(0.3,length(Zones))
+    SunWt <- Func(Zones)
+    Rin <- Incident(input$S,SunWt)
+    T <- gauss(Zones,0,50,31.6)-6
     a <- w*input$aW+b*input$aB+u*alb(T,input$ai,input$ab)
-    
-    Barr <- rep(0,500)
-    Warr <- rep(0,500)
-    Uarr <- rep(0,500)
-    Tarr <- rep(0,500)
-    I <- rep(0,500)
-    
-    TEMP <- matrix(NA, nrow=90, ncol=500)
     
     for(i in c(1:500)) {
       S <- Sun6(i)  # oppure costante S <- 1370
@@ -470,23 +450,16 @@ server <- function(input, output,session) {
       I[i] <- i
       Tarr[i] <- T[45]
     } 
+    
     ggplot(data.frame(I,Barr,Warr,Uarr,Tarr),aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("Without Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
   })
   
-  output$plot3_Daisy <- renderPlotly({
+  output$plot3_noDaisy <- renderPlotly({
     SunWt <- Func(Zones)
     Rin <- Incident(input$S,SunWt)
     T <- gauss(Zones,0,50,31.6)-6
-
+    
     a <- w*input$aW+b*input$aB+u*alb(T,input$ai,input$ab)
-    
-    Barr <- rep(0,500)
-    Warr <- rep(0,500)
-    Uarr <- rep(0,500)
-    Tarr <- rep(0,500)
-    I <- rep(0,500)
-    
-    TEMP <- matrix(NA, nrow=90, ncol=500)
     
     for(i in c(1:500)) {
       S <- Sun6(i)  # oppure costante S <- 1370
@@ -507,20 +480,12 @@ server <- function(input, output,session) {
                                                     zaxis = list(title = "T")  )) 
   })
   
-  output$plot4_Daisy <- renderPlot({
+  output$plot1_Daisy <- renderPlot({
     
     SunWt <- Func(Zones)
     Rin <- Incident(input$S,SunWt)
     T <- gauss(Zones,0,50,31.6)-6
     a <- w*input$aW+b*input$aB+u*alb(T,input$ai,input$ab)
-    
-    Barr <- rep(0,500)
-    Warr <- rep(0,500)
-    Uarr <- rep(0,500)
-    Tarr <- rep(0,500)
-    I <- rep(0,500)
-    
-    TEMP <- matrix(NA, nrow=90, ncol=500)
     
     for(i in c(1:500)) {
       S <- Sun6(i)  # oppure costante S <- 1370
@@ -553,17 +518,9 @@ server <- function(input, output,session) {
     ggplot(data.frame(Zones,w,b,u,T),aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
   })
   
-  output$plot5_Daisy <- renderPlot({
+  output$plot2_Daisy <- renderPlot({
     
     a <- w*input$aW+b*input$aB+u*alb(T,0.62,0.25)
-    
-    Barr <- rep(0,500)
-    Warr <- rep(0,500)
-    Uarr <- rep(0,500)
-    Tarr <- rep(0,500)
-    I <- rep(0,500)
-    
-    TEMP <- matrix(NA, nrow=90, ncol=500)
     
     for(i in c(1:500)) {
       S <- Sun6(i)  # oppure costante S <- 1370
@@ -596,18 +553,10 @@ server <- function(input, output,session) {
     ggplot(data.frame(I,Barr,Warr,Uarr,Tarr),aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
   })
   
-  output$plot6_Daisy <- renderPlotly({
+  output$plot3_Daisy <- renderPlotly({
     
-    a <- w*input$aW+b*input$aB+u*alb(T,0.62,0.25)
-    
-    Barr <- rep(0,500)
-    Warr <- rep(0,500)
-    Uarr <- rep(0,500)
-    Tarr <- rep(0,500)
-    I <- rep(0,500)
-    
-    TEMP <- matrix(NA, nrow=90, ncol=500)
-    
+    a <- w*input$aW+b*input$aB+u*alb(T,input$ai,input$ab)
+
     for(i in c(1:500)) {
       S <- Sun6(i)  # oppure costante S <- 1370
       Rin <- Incident(S,SunWt)
