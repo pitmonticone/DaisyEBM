@@ -4,6 +4,11 @@ library(plotly)
 library(broom)
 library(scales)
 library(shinythemes) #---> themeSelector()
+# risonanza stocastica
+# a(input$T,input$a,input$b,input$c) 
+# LATEX FORMULAS
+# COSIN^2 --> COSIN 
+# EBM GENERALIZZATO CON FUNZIONI (COMPATTIFICAZIONE)
 
 
 # INITIALIZATION ----
@@ -52,6 +57,7 @@ TEMP4 <- matrix(NA, nrow=90, ncol=200)
 T4 <- gauss(Zones,0,50,31.6)
 TEMP3 <- matrix(NA, nrow=90, ncol=200)
 T3 <- gauss(Zones,0,50,31.6)
+
 
 
 
@@ -111,6 +117,9 @@ ui <- fluidPage(
                    label = "Death Rate", 
                    value = 0.3,
                    min = NA, max = NA, step = NA)
+     # br(),
+     # h3("Input Parameters"),
+    
     ),
     mainPanel(
       tabsetPanel(
@@ -126,6 +135,7 @@ ui <- fluidPage(
     )
   )
 )
+
 
 # SERVER ----
 server <- function(input, output,session) {
@@ -593,6 +603,7 @@ server <- function(input, output,session) {
   })
   
 }
+
 
 
 # APP ----
