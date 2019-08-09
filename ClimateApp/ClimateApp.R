@@ -4,25 +4,6 @@ library(plotly)
 library(scales)
 library(shinythemes) #---> themeSelector()
 
-# FUNCTIONS ----
-Func <-  function(x){
-  0.7768699*cos(0.0164348*x)^2+0.4617747
-}
-gauss <-  function(x,m,sd,b){
-  ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
-}
-Sun1 <- function(x,a){a*x/100}
-Sun2 <- function(x){1370*(sinpi((x+90)/180))^2}
-Sun3 <- function(x){1370-(((1370)/(sqrt(2*pi*1^2)))*exp(-(x-50)^2/(2*1^2)))}
-Sun4 <- function(x){ifelse(x==50,1370/3,1370)}
-Sun5 <- function(x){(1/100) * (abs(x-150)+25)}
-Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
-Incident <- function(x,y){x*y/4}
-Step <- function(x,c){ifelse(x<c, 0.6, 0.3)}
-alb <- function(x,a,b){
-  (-exp(2.2*x+10)/(exp(2.2*x+10)+1))*(a-b)+a}
-
-
 # UI ----
 ui <- fluidPage(
   theme = shinytheme("spacelab"),
@@ -97,7 +78,24 @@ ui <- fluidPage(
 
 
 # SERVER ----
-server <- function(input, output, session) {
+server <- function(input, output) {
+
+  Func <-  function(x){
+    0.7768699*cos(0.0164348*x)^2+0.4617747
+  }
+  gauss <-  function(x,m,sd,b){
+    ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
+  }
+  Sun1 <- function(x,a){a*x/100}
+  Sun2 <- function(x){1370*(sinpi((x+90)/180))^2}
+  Sun3 <- function(x){1370-(((1370)/(sqrt(2*pi*1^2)))*exp(-(x-50)^2/(2*1^2)))}
+  Sun4 <- function(x){ifelse(x==50,1370/3,1370)}
+  Sun5 <- function(x){(1/100) * (abs(x-150)+25)}
+  Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
+  Incident <- function(x,y){x*y/4}
+  Step <- function(x,c){ifelse(x<c, 0.6, 0.3)}
+  alb <- function(x,a,b){
+    (-exp(2.2*x+10)/(exp(2.2*x+10)+1))*(a-b)+a}
   
 output$plot_albedo <- renderPlot({ 
   Temperature <- rep(0,300)
