@@ -9,6 +9,7 @@ library(shinythemes) #---> themeSelector()
 # LATEX FORMULAS
 # COSIN^2 --> COSIN 
 # EBM GENERALIZZATO CON FUNZIONI (COMPATTIFICAZIONE)
+# GRID PLOTLY WITH DAISIES
 
 
 # INITIALIZATION ----
@@ -526,7 +527,7 @@ server <- function(input, output,session) {
     } 
     
     ggplot(data.frame(Zones,w,b,u,T),aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
-  })
+  }) #attenzione S=const
   
   output$plot2_Daisy <- renderPlot({
     
@@ -603,6 +604,7 @@ server <- function(input, output,session) {
   })
   
 }
+
 
 
 
