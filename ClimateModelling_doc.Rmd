@@ -51,7 +51,7 @@ coszones <- cospi(zones/180)
 sunWt <- c(0.5,0.531,0.624,0.77,0.892,1.021,1.12,1.189,1.219)
 df <- data.frame(zones,sunWt)
 f <-  function(zones,d,n,k){
-         d*cos(n*zones)^2+k } #COSENO OPP POLY2
+         d*cos(n*zones)^2+k } #cos or cos^2 ??
 
 Fit <-  nls(sunWt ~ f(zones,d,n,k),data= df, start=list(d=1,n=0.015,k=0.3))
 ggplot(df, aes(zones,sunWt))+geom_point()+geom_smooth(aes(y=f(zones,0.7768699,0.0164348,0.4617747)))+xlab("Latitude")+ylab("Solar Weight Factor")

@@ -70,8 +70,9 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       h3("Input Parameters"),
+     
       numericInput("S",
-                   label = "Solar Constant", 
+                   label = "Solar Luminosity", 
                    value = 1370,
                    min = NA, max = NA, step = NA),
       numericInput("A",
@@ -102,6 +103,26 @@ ui <- fluidPage(
                    label = "Black Albedo", 
                    value = 0.25,
                    min = NA, max = NA, step = NA),
+      numericInput("w0",
+                   label = "% White", 
+                   value = 0.5,
+                   min = NA, max = NA, step = NA),
+      numericInput("b0",
+                   label = "% Black", 
+                   value = 0.25,
+                   min = NA, max = NA, step = NA),
+      numericInput("u0",
+                   label = "% Bare Ground", 
+                   value = 1-0.5-0.25,
+                   min = NA, max = NA, step = NA),
+      numericInput("gamma",
+                   label = "Gamma", 
+                   value = 2.2,
+                   min = NA, max = NA, step = NA),
+      numericInput("delta",
+                   label = "Delta", 
+                   value = 10/2.2,
+                   min = NA, max = NA, step = NA),
       numericInput("c",
                    label = "c", 
                    value = 7,
@@ -118,9 +139,9 @@ ui <- fluidPage(
                    label = "Death Rate", 
                    value = 0.3,
                    min = NA, max = NA, step = NA)
-     # br(),
-     # h3("Input Parameters"),
-    
+      # br(),
+      # h3("Input Parameters"),
+      
     ),
     mainPanel(
       tabsetPanel(
@@ -277,6 +298,7 @@ server <- function(input, output,session) {
   output$plot1_Run3 <- renderPlot({
     
     TEMP3 <- matrix(NA, nrow=90, ncol=200)
+    Temp <- rep(0,200)
     T3 <- gauss(Zones,0,50,31.6)
     a <- alb(T3,input$ai,input$ab)
     
