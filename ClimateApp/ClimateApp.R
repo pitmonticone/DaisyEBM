@@ -5,7 +5,6 @@ library(broom)
 library(scales)
 library(shinythemes) #---> themeSelector()
 # risonanza stocastica
-# a(input$T,input$a,input$b,input$c) 
 # LATEX FORMULAS
 # COSIN^2 --> COSIN 
 # EBM GENERALIZZATO CON FUNZIONI (COMPATTIFICAZIONE)
@@ -138,10 +137,15 @@ ui <- fluidPage(
       numericInput("D",
                    label = "Death Rate", 
                    value = 0.3,
-                   min = NA, max = NA, step = NA)
-      # br(),
-      # h3("Input Parameters"),
-      
+                   min = NA, max = NA, step = NA),
+       br(),
+       br(),
+       h3("Source :"),
+      a("Climate Modelling Project", href="https://pitmonticone.github.io/Climate-Physics/"),
+      h3("Authors :"),
+      tags$ul( tags$li( a("Pietro Monticone", href="https://github.com/pitmonticone") ), 
+               tags$li( a("Davide Orsenigo", href="https://github.com/dadorse") )
+              )
     ),
     mainPanel(
       tabsetPanel(
