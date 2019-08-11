@@ -58,84 +58,82 @@ T4 <- gauss(Zones,0,50,31.6)
 TEMP3 <- matrix(NA, nrow=90, ncol=200)
 T3 <- gauss(Zones,0,50,31.6)
 
-
-
-
 # UI ----
 ui <- fluidPage(
   theme = shinytheme("spacelab"),
   titlePanel("Climate Modelling"),
+  withMathJax(),
   
   sidebarLayout(
     sidebarPanel(
       h3("Input Parameters"),
      
       numericInput("S",
-                   label = "Solar Luminosity", 
+                   label = "Solar Luminosity (\\(\\ S \\))", 
                    value = 1370,
                    min = NA, max = NA, step = NA),
       numericInput("A",
-                   label = "A", 
+                   label = "\\(\\ A \\)", 
                    value = 204,
                    min = NA, max = NA, step = NA),
       numericInput("B",
-                   label = "B", 
+                   label = "\\(\\ B \\)", 
                    value = 2.17,
                    min = NA, max = NA, step = NA),
       numericInput("K",
-                   label = "K", 
+                   label = "\\(\\ K \\)", 
                    value = 3.86,
                    min = NA, max = NA, step = NA),
       numericInput("ai",
-                   label = "Ice Albedo", 
+                   label = "Ice Albedo (\\(\\alpha\\))", 
                    value = 0.62,
                    min = NA, max = NA, step = NA),
       numericInput("ab",
-                   label = "Bare Ground Albedo", 
+                   label = "Bare Ground Albedo (\\(\\beta\\))", 
                    value = 0.25,
-                   min = NA, max = NA, step = NA),
-      numericInput("aW",
-                   label = "White Albedo", 
-                   value = 0.75,
-                   min = NA, max = NA, step = NA),
-      numericInput("aB",
-                   label = "Black Albedo", 
-                   value = 0.25,
-                   min = NA, max = NA, step = NA),
-      numericInput("w0",
-                   label = "% White", 
-                   value = 0.5,
-                   min = NA, max = NA, step = NA),
-      numericInput("b0",
-                   label = "% Black", 
-                   value = 0.25,
-                   min = NA, max = NA, step = NA),
-      numericInput("u0",
-                   label = "% Bare Ground", 
-                   value = 1-0.5-0.25,
                    min = NA, max = NA, step = NA),
       numericInput("gamma",
-                   label = "Gamma", 
+                   label = "Steepness Albedo (\\(\\gamma\\))", 
                    value = 2.2,
                    min = NA, max = NA, step = NA),
       numericInput("delta",
-                   label = "Delta", 
+                   label = "Offset Albedo (\\(\\delta\\))", 
                    value = 10/2.2,
                    min = NA, max = NA, step = NA),
+      numericInput("aW",
+                   label = "White Albedo (\\(\\ a_{w} \\))", 
+                   value = 0.75,
+                   min = NA, max = NA, step = NA),
+      numericInput("aB",
+                   label = "Black Albedo (\\(\\ a_{b} \\))", 
+                   value = 0.25,
+                   min = NA, max = NA, step = NA),
+      numericInput("w0",
+                   label = "% White (\\(\\ w_{0} \\))", 
+                   value = 0.5,
+                   min = NA, max = NA, step = NA),
+      numericInput("b0",
+                   label = "% Black (\\(\\ b_{0} \\))", 
+                   value = 0.25,
+                   min = NA, max = NA, step = NA),
+      numericInput("u0",
+                   label = "% Bare Ground (\\(\\ 1-w_0-b_0 \\))", 
+                   value = 1-0.5-0.25,
+                   min = NA, max = NA, step = NA),
       numericInput("c",
-                   label = "c", 
+                   label = "\\(\\ c \\)", 
                    value = 7,
                    min = NA, max = NA, step = NA),
       numericInput("k",
-                   label = "k", 
+                   label = "\\(\\ k \\)", 
                    value = 0.003265*0.75,
                    min = NA, max = NA, step = NA),
       numericInput("T0",
-                   label = "T_0", 
+                   label = "\\(\\ T_0 \\)", 
                    value = 20,
                    min = NA, max = NA, step = NA),
       numericInput("D",
-                   label = "Death Rate", 
+                   label = "Death Rate (\\(\\ D \\))", 
                    value = 0.3,
                    min = NA, max = NA, step = NA),
        br(),
@@ -149,14 +147,31 @@ ui <- fluidPage(
     ),
     mainPanel(
       tabsetPanel(
-        tabPanel("Albedo", plotOutput("plot_albedo")),
-        tabPanel("Run 0", plotOutput("plot1_Run0"),plotOutput("plot2_Run0")),
-        tabPanel("Run 1", plotOutput("plot1_Run1"),plotlyOutput("plot2_Run1")),
-        tabPanel("Run 2", plotOutput("plot1_Run2"),plotlyOutput("plot2_Run2")),
-        tabPanel("Run 3 & 4", plotOutput("plot1_Run3"),plotOutput("plot1_Run4"),plotlyOutput("plot2_Run3"),plotlyOutput("plot2_Run4")),
-        tabPanel("Hysteresis Cycles", plotOutput("plot1_Hysteresis"), plotOutput("plot2_Hysteresis")),
-        tabPanel("Without Daisies", plotOutput("plot1_noDaisy"), plotOutput("plot2_noDaisy"), plotlyOutput("plot3_noDaisy")),
-        tabPanel("With Daisies", plotOutput("plot1_Daisy"), plotOutput("plot2_Daisy"), plotlyOutput("plot3_Daisy") )
+        tabPanel("Albedo",
+                 uiOutput("Albedo"),
+                 plotOutput("plot_albedo")
+                 ),
+        tabPanel("Run 0", 
+                 uiOutput("Run0"),
+                 plotOutput("plot1_Run0"),plotOutput("plot2_Run0")),
+        tabPanel("Run 1", 
+                 uiOutput("Run1"),
+                 plotOutput("plot1_Run1"),plotlyOutput("plot2_Run1")),
+        tabPanel("Run 2", 
+                 uiOutput("Run2"),
+                 plotOutput("plot1_Run2"),plotlyOutput("plot2_Run2")),
+        tabPanel("Run 3 & 4",
+                 uiOutput("Run34"),
+                 plotOutput("plot1_Run3"),plotOutput("plot1_Run4"),plotlyOutput("plot2_Run3"),plotlyOutput("plot2_Run4")),
+        tabPanel("Hysteresis Cycles",
+                 uiOutput("Hysteresis"),
+                 plotOutput("plot1_Hysteresis"), plotOutput("plot2_Hysteresis")),
+        tabPanel("Without Daisies",
+                 uiOutput("NoDaisy"),
+                 plotOutput("plot1_noDaisy"), plotOutput("plot2_noDaisy"), plotlyOutput("plot3_noDaisy")),
+        tabPanel("With Daisies",
+                 uiOutput("Daisy"),
+                 plotOutput("plot1_Daisy"), plotOutput("plot2_Daisy"), plotlyOutput("plot3_Daisy") )
       )
     )
   )
@@ -165,6 +180,76 @@ ui <- fluidPage(
 
 # SERVER ----
 server <- function(input, output,session) {
+  
+  output$Albedo <- renderUI({
+    withMathJax(
+      p('$$a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$')
+      )
+  })
+  
+  output$Run0 <- renderUI({
+    withMathJax(
+      p('$$a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$'),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+      
+    )
+  })
+  
+  output$Run1 <- renderUI({
+    withMathJax(
+      p('$$ S_1(t)= \\frac{S}{100}t $$'),
+      p('$$ a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$'),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+      )
+  })
+  
+  output$Run2 <- renderUI({
+    withMathJax(
+      p('$$ S_2(t)= S(\\sin^2(t+90)) $$'),
+      p('$$ a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$'),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+    )
+  })
+  
+  output$Run34 <- renderUI({
+    withMathJax(
+      p('$$ S_3(t)= S\\Big(1-\\frac{1}{\\sqrt{2\\pi}}e^{-\\frac{(t-50)^2}{2}}\\Big) $$'),
+      p('$$ S_4(t)= S\\Big(1-\\frac{1}{3}\\delta(t-50)\\Big) $$'),
+      p('$$ a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$'),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+    )
+  })
+  
+  output$Hysteresis <- renderUI({
+    withMathJax(
+      p('$$ S_2(t)= S(\\sin^2(t+90)) $$'),
+      p('$$ S_5(t)=\\frac{1}{100}(|t-150|+25) $$'),
+      p('$$ a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$'),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+    )
+  })
+  
+  output$NoDaisy <- renderUI({
+    withMathJax(
+      p('$$ S_6(t)=S\\Big(1+\\frac{1}{10} cos(t)\\Big)  $$'),
+      p('$$ a(T)=\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha$$'),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+    )
+  })
+  
+  output$Daisy <- renderUI({
+    withMathJax(
+      p('$$ S_6(t)=S\\Big(1+\\frac{1}{10} cos(t)\\Big)  $$'),
+      p('$$ a(T)=wa_w+ba_b+u\\Big(\\frac{e^{\\gamma(T+\\delta)}}{e^{\\gamma(T+\\delta)}+1} (\\beta-\\alpha) + \\alpha\\Big)$$'),
+      p("$$ T_w=T+c(a-a_w) $$"),
+      p("$$ T_b=T+c(a-a_b) $$"),
+      p("$$ F_w=1-k(T_0-T_w)^2 $$"),
+      p("$$ F_b=1-k(T_0-T_b)^2 $$"),
+      p("$$ w'=w+w(uF_w-D) $$"),
+      p("$$ b'=b+b(uF_b-D) $$"),
+      p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
+    )
+  })
   
   output$plot_albedo <- renderPlot({ 
     ggplot(data.frame(x= seq(-15,15, by=0.1),y=alb(seq(-15,15, by=0.1),input$ai,input$ab)))+geom_line(aes(x,y),colour="blue")+xlab("Temperature")+ylab("Albedo")

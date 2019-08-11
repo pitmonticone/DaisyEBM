@@ -710,7 +710,7 @@ $$ S_4(t)=1370\Big(1-\frac{1}{3}\delta(t-50)\Big) $$
 $$ S_5(t)=\frac{1}{100}(|t-150|+25) $$
 $$ S_6(t)=1370\Big(1+\frac{1}{10} cos(t)\Big) $$
 $$ a(T)=\frac{e^{\gamma(T+\delta)}}{e^{\gamma(T+\delta)}+1} (\beta-\alpha) + \alpha $$
-$$ T =\frac{ R_{in}(1-a)+KT_m-A }{ B+K } $$
+$$ T =\frac{ R_{in}(1-a(T))+KT_m-A }{ B+K } $$
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 plot_albedo <- ggplot(data.frame(x= seq(-15,15, by=0.1),y=alb(seq(-15,15, by=0.1),ai,ab,gamma,delta)))+geom_line(aes(x,y),colour="blue")+xlab("Temperature")+ylab("Albedo")
