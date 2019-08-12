@@ -556,7 +556,7 @@ ebm_D1 <- function(cycles,S,w0,b0,T0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
   Tarr <- rep(0,cycles)
   I <- rep(0,cycles)
   
-  TEMP <- matrix(NA, nrow=90, ncol=cycles)
+  TEMP <- matrix(NA, nrow=length(Zones), ncol=cycles)
   
   for(i in c(1:cycles)) {
     S6 <- Sun6(i)  # oppure costante S <- 1370
@@ -612,7 +612,7 @@ ebm_D2 <- function(cycles,S,w0,b0,T0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
   Tarr <- rep(0,cycles)
   I <- rep(0,cycles)
   
-  TEMP <- matrix(NA, nrow=90, ncol=cycles)
+  TEMP <- matrix(NA, nrow=length(Zones), ncol=cycles)
   
   for(i in c(1:cycles)) {
     S6 <- Sun6(i)  # oppure costante S <- 1370
@@ -668,7 +668,7 @@ ebm_D3 <- function(cycles,S,w0,b0,T0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
   Tarr <- rep(0,cycles)
   I <- rep(0,cycles)
   
-  TEMP <- matrix(NA, nrow=90, ncol=cycles)
+  TEMP <- matrix(NA, nrow=length(Zones), ncol=cycles)
   
   for(i in c(1:cycles)) {
     S6 <- Sun6(i) 
@@ -698,6 +698,128 @@ ebm_D3 <- function(cycles,S,w0,b0,T0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
     Tarr[i] <- T[45]
   } 
   return ( TEMP )
+}
+ebm_Db <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+  Incident <- function(x,y){ x*y/4 }
+  Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }  
+  Sun6 <- function(x){S*(1+0.1*cospi(x/180))}
+  gauss <-  function(x,m,sd,b){
+    ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
+  }
+  
+  Zones <- seq(-89, 89, by = 2)
+  cosZones <- abs(cospi(Zones/180))
+  SunWt <- Func(Zones)
+  T <- gauss(Zones,0,50,31.6)-6
+  
+  w <- rep(w0,length(Zones)) #0.5
+  b <- rep(b0,length(Zones)) #0.2
+  u <- rep(1-w0-b0,length(Zones))
+  
+  a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
+  
+  Barr <- rep(0,cycles)
+  Warr <- rep(0,cycles)
+  Uarr <- rep(0,cycles)
+  Tarr <- rep(0,cycles)
+  I <- rep(0,cycles)
+  
+  TEMP <- matrix(NA, nrow=length(Zones), ncol=cycles)
+  BLACK <- matrix(NA, nrow=length(Zones), ncol=cycles)
+  WHITE <- matrix(NA, nrow=length(Zones), ncol=cycles)
+  
+  
+  for(i in c(1:cycles)) {
+    S6 <- Sun6(i) 
+    Rin <- Incident(S6,SunWt)
+    Tcos <- cosZones*T
+    Tm <- sum(Tcos)/sum(cosZones)
+    T <- (Rin*(1-a)+K*Tm-A) / (B+K)
+    Tw <- T+c*(a-aW)
+    Tb <- T+c*(a-aB)
+    Fw <- 1-k*(T0-Tw)^2
+    Fb <- 1-k*(T0-Tb)^2
+    for(j in c(1:length(Zones))){
+      if(Fw[j]<0){Fw[j]=0}
+      if(Fb[j]<0){Fb[j]=0}  }
+    w <- w+w*(u*Fw-D)
+    b <- b+b*(u*Fb-D)
+    for(j in c(1:length(Zones))){
+      if(w[j]<0.001){w[j]=0.001}
+      if(b[j]<0.001){b[j]=0.001}  }
+    u <- 1-w-b
+    a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
+    Barr[i] <- b[45]
+    Warr[i] <- w[45]
+    Uarr[i] <- u[45]
+    I[i] <- i
+    Tarr[i] <- T[45]
+    TEMP[,i] <- T
+    BLACK[,i] <- b
+    WHITE[,i] <- w
+  } 
+  return ( BLACK )
+}
+ebm_Dw <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+  Incident <- function(x,y){ x*y/4 }
+  Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }  
+  Sun6 <- function(x){S*(1+0.1*cospi(x/180))}
+  gauss <-  function(x,m,sd,b){
+    ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
+  }
+  
+  Zones <- seq(-89, 89, by = 2)
+  cosZones <- abs(cospi(Zones/180))
+  SunWt <- Func(Zones)
+  T <- gauss(Zones,0,50,31.6)-6
+  
+  w <- rep(w0,length(Zones)) #0.5
+  b <- rep(b0,length(Zones)) #0.2
+  u <- rep(1-w0-b0,length(Zones))
+  
+  a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
+  
+  Barr <- rep(0,cycles)
+  Warr <- rep(0,cycles)
+  Uarr <- rep(0,cycles)
+  Tarr <- rep(0,cycles)
+  I <- rep(0,cycles)
+  
+  TEMP <- matrix(NA, nrow=length(Zones), ncol=cycles)
+  BLACK <- matrix(NA, nrow=length(Zones), ncol=cycles)
+  WHITE <- matrix(NA, nrow=length(Zones), ncol=cycles)
+  
+  
+  for(i in c(1:cycles)) {
+    S6 <- Sun6(i) 
+    Rin <- Incident(S6,SunWt)
+    Tcos <- cosZones*T
+    Tm <- sum(Tcos)/sum(cosZones)
+    T <- (Rin*(1-a)+K*Tm-A) / (B+K)
+    Tw <- T+c*(a-aW)
+    Tb <- T+c*(a-aB)
+    Fw <- 1-k*(T0-Tw)^2
+    Fb <- 1-k*(T0-Tb)^2
+    for(j in c(1:length(Zones))){
+      if(Fw[j]<0){Fw[j]=0}
+      if(Fb[j]<0){Fb[j]=0}  }
+    w <- w+w*(u*Fw-D)
+    b <- b+b*(u*Fb-D)
+    for(j in c(1:length(Zones))){
+      if(w[j]<0.001){w[j]=0.001}
+      if(b[j]<0.001){b[j]=0.001}  }
+    u <- 1-w-b
+    a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
+    Barr[i] <- b[45]
+    Warr[i] <- w[45]
+    Uarr[i] <- u[45]
+    I[i] <- i
+    Tarr[i] <- T[45]
+    TEMP[,i] <- T
+    BLACK[,i] <- b
+    WHITE[,i] <- w
+  } 
+  return ( WHITE )
 }
 
 # UI ----
@@ -758,10 +880,6 @@ ui <- fluidPage(
                    label = "% Black (\\(\\ b_{0} \\))", 
                    value = 0.25,
                    min = NA, max = NA, step = NA),
-      numericInput("u0",
-                   label = "% Bare Ground (\\(\\ 1-w_0-b_0 \\))", 
-                   value = 1-0.5-0.25,
-                   min = NA, max = NA, step = NA),
       numericInput("c",
                    label = "\\(\\ c \\)", 
                    value = 7,
@@ -813,7 +931,8 @@ ui <- fluidPage(
                  plotOutput("plot1_noDaisy"), plotOutput("plot2_noDaisy"), plotlyOutput("plot3_noDaisy")),
         tabPanel("With Daisies",
                  uiOutput("Daisy"),
-                 plotOutput("plot1_Daisy"), plotOutput("plot2_Daisy"), plotlyOutput("plot3_Daisy") )
+                 plotOutput("plot1_Daisy"), plotOutput("plot2_Daisy"), 
+                 plotlyOutput("plot3_Daisy"),plotlyOutput("plotb_Daisy"),plotlyOutput("plotw_Daisy")  )
       )
     )
   )
@@ -893,6 +1012,7 @@ server <- function(input, output,session){
       p('$$ T =\\frac{ R_{in}(1-a(T))+K \\bar{T}-A }{ B+K }$$')
     )
   })
+  
   
   output$plot_albedo <- renderPlot({ 
     plot_albedo <- ggplot(data.frame(x= seq(-15,15, by=0.1),y=alb(seq(-15,15, by=0.1),input$ai,input$ab,input$gamma,input$delta)))+geom_line(aes(x,y),colour="blue")+xlab("Temperature")+ylab("Albedo")
@@ -1038,10 +1158,32 @@ server <- function(input, output,session){
                                                    yaxis = list(title = "Latitude"),
                                                    zaxis = list(title = "T")  )) 
     })
+  ouput$plotb_Daisy <- renderPlotly({
+    BLACK <- ebm_Db(500,input$S,input$w0,input$b0,input$T0,input$c,input$k,input$A,input$B,input$K,input$ai,input$ab,input$aW,input$aB,input$gamma,input$delta)
+   
+    plot_ly(z=~BLACK)%>% add_surface() %>% layout(title="Black Daisies",
+                                                  scene = list(
+                                                    xaxis = list(title = "Time"),
+                                                    yaxis = list(title = "Latitude"),
+                                                    zaxis = list(title = "b")  )) 
+  })
+  ouput$plotw_Daisy <- renderPlotly({
+    WHITE <- ebm_Dw(500,input$S,input$w0,input$b0,input$T0,input$c,input$k,input$A,input$B,input$K,input$ai,input$ab,input$aW,input$aB,input$gamma,input$delta)
+    
+    plot_ly(z=~WHITE)%>% add_surface() %>% layout(title="White Daisies",
+                                                  scene = list(
+                                                    xaxis = list(title = "Time"),
+                                                    yaxis = list(title = "Latitude"),
+                                                    zaxis = list(title = "w")  )) 
+  })
+  
+  
+  
 }
 
 # APP ----
 shinyApp(ui = ui, server = server)
+
 
 
 
