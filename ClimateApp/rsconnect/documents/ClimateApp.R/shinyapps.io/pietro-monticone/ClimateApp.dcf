@@ -5,9 +5,9 @@ account: pietro-monticone
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1076481
-bundleId: 2312282
+bundleId: 2312306
 url: https://pietro-monticone.shinyapps.io/ClimateApp/
-when: 1565626215.43406
+when: 1565626673.1576
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .RData
