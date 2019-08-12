@@ -537,7 +537,7 @@ for(i in c(1:cycles)) {
 } 
   return( TEMP )}
 
-ebm_D1 <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+ebm_D1 <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
 Incident <- function(x,y){ x*y/4 }
 Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }
 Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
@@ -592,7 +592,7 @@ Tarr[i] <- T[45]
 } 
 return ( data.frame(Zones,w,b,u,T) )
 }
-ebm_D2 <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+ebm_D2 <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
 Incident <- function(x,y){ x*y/4 }
 Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }
 Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
@@ -647,7 +647,7 @@ Tarr[i] <- T[45]
 } 
 return ( data.frame(I,Barr,Warr,Uarr,Tarr) )
 }
-ebm_D3 <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+ebm_D3 <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
 Incident <- function(x,y){ x*y/4 }
 Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }  
 Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
@@ -702,7 +702,7 @@ Tarr[i] <- T[45]
 } 
 return ( TEMP )
 }
-ebm_Db <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+ebm_Db <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
   Incident <- function(x,y){ x*y/4 }
   Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }  
   Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
@@ -763,7 +763,7 @@ ebm_Db <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
   } 
   return ( BLACK )
 }
-ebm_Dw <- function(cycles,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta){
+ebm_Dw <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
   Incident <- function(x,y){ x*y/4 }
   Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }  
   Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
@@ -959,11 +959,11 @@ plot_ly(z=~TEMP)%>% add_surface() %>% layout( title="Without Daisies",
     zaxis = list(title = "T")  )) 
 
 #WITH DAISIES
-data_D1 <- ebm_D1(500,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta)
-data_D2 <- ebm_D2(500,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta)
-TEMP <- ebm_D3(500,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta)
-BLACK <- ebm_Db(500,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta)
-WHITE <- ebm_Dw(500,w0,b0,c,k,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D1 <- ebm_D1(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D2 <- ebm_D2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+TEMP    <- ebm_D3(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+BLACK   <- ebm_Db(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+WHITE   <- ebm_Dw(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 
 plot_D1 <- ggplot(data_D1 ,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 plot_D2 <- ggplot(data_D2,aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
