@@ -228,7 +228,7 @@ ebm23 <- function(cycles1,cycles2,S,A,B,K,ai,ab,gamma,delta ) {
   J <- rep(0,cycles1)
   Temp2 <- rep(0,cycles1)
   T2 <- gauss(Zones,0,50,31.6)
-  TEMP2 <- matrix(NA, nrow=90, ncol=cycles1)
+  TEMP2 <- matrix(NA, nrow=length(Zones), ncol=cycles1)
   a <- alb(T2,ai,ab,gamma,delta)
   Sarr <- rep(0,cycles1) 
   SunWt <- Func(Zones)
@@ -378,7 +378,7 @@ ebm42 <- function(cycles1,cycles2,S,A,B,K,ai,ab,gamma,delta ) {
   }
   return( TEMP4 ) }
 
-ebm51 <- function(cycles1,cycles2,A,B,K,ai,ab,gamma,delta ) {
+ebm51 <- function(cycles1,cycles2,S,A,B,K,ai,ab,gamma,delta ) {
   Incident <- function(x,y){ x*y/4 }
   Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }
   Sun5 <- function(x){(1/100) * (abs(x-150)+25)}
@@ -1104,7 +1104,7 @@ server <- function(input, output,session){
     plot23 <- ggplot(data23,aes(Sarr,Temp2))+geom_point(aes(Sarr, Temp2),colour = 'yellow')+ylab("Mean Temperature")+xlab("S_2(t)")+ggtitle("Mean temperature vs. Sinusoidally Fluctuating Incoming Radiation")
     plot23  })
   output$plot2_Hysteresis <- renderPlot({
-    data51 <- ebm51(300,60,input$A,input$B,input$K,input$ai,input$ab,input$gamma,input$delta )
+    data51 <- ebm51(300,60,input$S,input$A,input$B,input$K,input$ai,input$ab,input$gamma,input$delta )
     
     plot51 <- ggplot(data51,aes(Sarr,Temp5,group=1))+geom_point(aes(Sarr, Temp5),colour = 'yellow')+geom_segment(aes(x = Sarr[89], y = Temp5[89], xend = Sarr[90], yend = Temp5[90]),colour = 'yellow')+geom_segment(aes(x = Sarr[258], y = Temp5[258], xend = Sarr[259], yend = Temp5[259]),colour = 'yellow')+ylab("Mean Temperature")+xlab("S_5(t)")+ggtitle("Mean temperature vs. Linearly Fluctuating Incoming Radiation")
     plot51  })
