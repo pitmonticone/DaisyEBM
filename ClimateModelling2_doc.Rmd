@@ -7,6 +7,9 @@ output:
     theme: cayman
     highlight: github
     toc: true
+  sharing:
+      twitter: yes
+
 ---
 
 ```{r setup, include=FALSE}
@@ -23,6 +26,8 @@ library(tidyverse)
 library(plotly)
 library(scales)
 library(gganimate)
+library(knitr)
+library(DT)
 ```
 ### Input Parameters 
 
