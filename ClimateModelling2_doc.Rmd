@@ -7,8 +7,6 @@ output:
     theme: cayman
     highlight: github
     toc: true
-  sharing:
-      twitter: yes
 
 ---
 
