@@ -3,11 +3,10 @@ title: "Climate Modelling"
 author: "Pietro Monticone & Davide Orsenigo"
 date: '`r Sys.Date()` | Turin University'
 output:
- prettydoc::html_pretty:
-    theme: cayman
+  prettydoc::html_pretty:
     highlight: github
-    toc: true
-
+    theme: cayman
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -29,7 +28,6 @@ library(DT)
 library(colorRamps)
 ```
 ### Input Parameters 
-
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 S <- 1370
 A <- 204
@@ -540,6 +538,39 @@ for(i in c(1:cycles)) {
   Tarr[i] <- T[45]
 } 
   return( TEMP )}
+ebm_ND4 <- function(cycles,s,A,B,K,ai,ab,gamma,delta){
+Incident <- function(x,y){ x*y/4 }
+Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }
+Sun7 <- function(x,y){x*y}
+
+Zones <- seq(-89, 89, by = 2)
+cosZones <- abs(cospi(Zones/180))
+SunWt <- Func(Zones)
+Rin <- Incident(S,SunWt)
+Sarr1 <- rep(0,length(Zones))
+#Sarr[1] <- Sun7(S,s)
+Tarr1 <- rep(0,length(Zones))
+
+for(h in c(1:length(Zones))) {
+S <- 920+(h-1)*10
+Sarr1[h] <- S
+T <- gauss(Zones,0,50,31.6)-6
+
+a <- alb(T,ai,ab,gamma,delta)
+
+for(i in c(1:cycles)) {
+Rin <- Incident(S,SunWt)
+Tcos <- cosZones*T
+TM <- sum(T)/length(Zones)
+Tm <- sum(Tcos)/sum(cosZones)
+T <- (Rin*(1-a)+K*Tm-A) / (B+K)
+a <- alb(T,ai,ab,gamma,delta)
+}
+Tarr1[h] <- Tm
+} 
+return (data.frame(Tarr1,Sarr1))
+
+}
 
 ebm_D1 <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
 Incident <- function(x,y){ x*y/4 }
@@ -931,6 +962,74 @@ ebm_Dw2 <- function(cycles,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
   } 
   return ( WHITE )
 }
+ebm_D4 <- function(p,cycles,s,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta){
+Incident <- function(x,y){ x*y/4 }
+Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }
+Sun7 <- function(x,y){x*y}
+
+Zones <- seq(-89, 89, by = 2)
+cosZones <- abs(cospi(Zones/180))
+SunWt <- Func(Zones)
+Rin <- Incident(S,SunWt)
+Sarr <- rep(0,length(Zones))
+#Sarr[1] <- Sun7(S,s)
+
+BLACK <- matrix(NA, nrow=length(Zones), ncol=cycles)
+WHITE <- matrix(NA, nrow=length(Zones), ncol=cycles)
+Tarr <- rep(0,length(Zones))
+
+for(h in c(1:length(Zones))) {
+S <- 920+(h-1)*10
+Sarr[h] <- S
+T <- gauss(Zones,0,50,31.6)-6
+
+w <- rep(w0,length(Zones)) #0.5
+b <- rep(b0,length(Zones)) #0.2
+u <- rep(1-w0-b0,length(Zones))
+
+a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
+
+Barr <- rep(0,cycles)
+Warr <- rep(0,cycles)
+
+for(i in c(1:cycles)) {
+Rin <- Incident(S,SunWt)
+Tcos <- cosZones*T
+TM <- sum(T)/length(Zones)
+Tm <- sum(Tcos)/sum(cosZones)
+T <- (Rin*(1-a)+K*Tm-A) / (B+K)
+Tw <- T+c*(a-aW)
+Tb <- T+c*(a-aB)
+Fw <- 1-k*(T0-Tw)^2
+Fb <- 1-k*(T0-Tb)^2
+for(j in c(1:length(Zones))){
+  if(Fw[j]<0){Fw[j]=0}
+  if(Fb[j]<0){Fb[j]=0}  }
+w <- w+w*(u*Fw-D)
+b <- b+b*(u*Fb-D)
+for(j in c(1:length(Zones))){
+if(w[j]<0.001){w[j]=0.001}
+if(b[j]<0.001){b[j]=0.001}  }
+u <- 1-w-b
+a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
+Warr[i] <- w[45]
+Barr[i] <- b[45]
+
+}
+WHITE[h,] <- Warr
+BLACK[h,] <- Barr
+Tarr[h] <- Tm
+} 
+if(p==0){return (WHITE)}
+if(p==1){return (BLACK)}
+if(p==2){return (data.frame(Tarr,Sarr))}
+}
+
+
+
+
+
+
 
 ```
 
@@ -1066,13 +1165,14 @@ plot51
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # WITHOUT DAISIES
-data_ND1 <- ebm_ND1(150,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta) #from 500
-data_ND2 <- ebm_ND2(150,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
-TEMP <- ebm_ND3(150,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_ND1 <- ebm_ND1(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta) #from 500
+data_ND2 <- ebm_ND2(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_ND4 <- ebm_ND4(300,1370/920,A,B,K,ai,ab,gamma,delta)
+TEMP <- ebm_ND3(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
 
-plot_ND1 <- ggplot(data_ND1,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("Without Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
+plot_ND1 <- ggplot(data_ND1,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("Without Daisies | Time Steps : 100")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 
-plot_ND2 <- ggplot(data_ND2,aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("Without Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
+plot_ND2 <- ggplot(data_ND2,aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("Without Daisies | Time Steps : 100")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 
 plot_ND1 
 plot_ND2
@@ -1083,15 +1183,17 @@ plot_ly(z=~TEMP)%>% add_surface() %>% layout( title="Temperature Without Daisies
     zaxis = list(title = "T")  )) 
 
 #WITH DAISIES
-data_D1 <- ebm_D1(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-data_D2 <- ebm_D2(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-TEMP    <- ebm_D3(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-BLACK   <- ebm_Db2(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-WHITE   <- ebm_Dw2(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D1 <- ebm_D1(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D2 <- ebm_D2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D4 <- ebm_D4(2,300,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+TEMP    <- ebm_D3(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+BLACK   <- ebm_Db2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+WHITE   <- ebm_Dw2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+
 
 plot_D1 <- ggplot(data_D1 ,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 plot_D2 <- ggplot(data_D2,aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
-
+plot_D4 <- ggplot(data_D4,aes(Sarr,Tarr))+ylab("Temperature")+xlab("Solar Luminosity")+ggtitle("Solar Luminosity vs. Temperature")+geom_line()
 
 plot_D1
 plot_D2
@@ -1120,6 +1222,26 @@ ebm_Db1(150,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)%>% layout(title=
 ebm_Dw1(150,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta) %>% layout(title="Distribution of White Daisies",
                                                xaxis = list(title = "Latitude"),
                                                yaxis = list(title = "Solar Luminosity") )
+
+WHITE  <- ebm_D4(0,300,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+BLACK  <- ebm_D4(1,300,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+
+
+plot_ly(z=~BLACK)%>% add_surface() %>% layout(title="Distribution of Black Daisies",
+                                             scene = list(
+                                               xaxis = list(title = "Time"),
+                                               yaxis = list(title = "Solar Luminosity"),
+                                               zaxis = list(title = "Black")  )) 
+
+plot_ly(z=~WHITE)%>% add_surface() %>% layout(title="Distribution of White Daisies",
+                                             scene = list(
+                                               xaxis = list(title = "Time"),
+                                               yaxis = list(title = "Solar Luminosity"),
+                                               zaxis = list(title = "Black")  )) 
+
+data_ND4_D4 <- data.frame(data_ND4,data_D4)
+plot_ND4_D4 <- ggplot(data_ND4_D4,aes(Sarr))+ylab("Temperature")+xlab("Solar Luminosity")+ggtitle("Solar Luminosity vs. Temperature")+geom_line(aes(y=Tarr, colour = "With Daisies"))+geom_line(aes(y=Tarr1, colour = "Without Daisies"))+scale_colour_manual(name="Legend",values=c("green","brown"))
+plot_ND4_D4
 
 ```
 
