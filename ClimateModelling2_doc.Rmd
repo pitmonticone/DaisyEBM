@@ -966,8 +966,8 @@ plot_albedo
 
 # Run 0
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-data01 <- ebm01(300,A,B,K,ai,ab,gamma,delta)
-data02 <-ebm02(300,A,B,K,ai,ab,gamma,delta)
+data01 <- ebm01(150,A,B,K,ai,ab,gamma,delta) #from 300
+data02 <-ebm02(150,A,B,K,ai,ab,gamma,delta)  #from 300
 
 plot01 <- ggplot(data01,aes(Zones)) +
   geom_line(aes(y=T, colour = "Temperature",linetype="Temperature")) +
@@ -1066,9 +1066,9 @@ plot51
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # WITHOUT DAISIES
-data_ND1 <- ebm_ND1(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
-data_ND2 <- ebm_ND2(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
-TEMP <- ebm_ND3(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_ND1 <- ebm_ND1(150,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta) #from 500
+data_ND2 <- ebm_ND2(150,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
+TEMP <- ebm_ND3(150,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
 
 plot_ND1 <- ggplot(data_ND1,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("Without Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 
@@ -1083,11 +1083,11 @@ plot_ly(z=~TEMP)%>% add_surface() %>% layout( title="Temperature Without Daisies
     zaxis = list(title = "T")  )) 
 
 #WITH DAISIES
-data_D1 <- ebm_D1(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-data_D2 <- ebm_D2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-TEMP    <- ebm_D3(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-BLACK   <- ebm_Db2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-WHITE   <- ebm_Dw2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D1 <- ebm_D1(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+data_D2 <- ebm_D2(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+TEMP    <- ebm_D3(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+BLACK   <- ebm_Db2(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
+WHITE   <- ebm_Dw2(150,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 
 plot_D1 <- ggplot(data_D1 ,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 plot_D2 <- ggplot(data_D2,aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
@@ -1101,25 +1101,25 @@ plot_ly(z=~TEMP)%>% add_surface() %>% layout(title="Temperature With Daisies",
                                                yaxis = list(title = "Latitude"),
                                                zaxis = list(title = "T")  ))
 
-ebm_Db1(500,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)%>% layout(title="Distribution of Black Daisies",
-                                               xaxis = list(title = "Latitude"),
-                                               yaxis = list(title = "Solar Luminosity") )
-
 plot_ly(z=~BLACK)%>% add_surface() %>% layout(title="Distribution of Black Daisies",
                                              scene = list(
                                                xaxis = list(title = "Time"),
                                                yaxis = list(title = "Latitude"),
                                                zaxis = list(title = "Black")  )) 
 
-ebm_Dw1(500,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta) %>% layout(title="Distribution of White Daisies",
-                                               xaxis = list(title = "Latitude"),
-                                               yaxis = list(title = "Solar Luminosity") )
-
 plot_ly(z=~WHITE)%>% add_surface() %>% layout(title="Distribution of White Daisies",
                                              scene = list(
                                                xaxis = list(title = "Time"),
                                                yaxis = list(title = "Latitude"),
                                                zaxis = list(title = "White")  ))
+
+ebm_Db1(150,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)%>% layout(title="Distribution of Black Daisies",
+                                               xaxis = list(title = "Latitude"),
+                                               yaxis = list(title = "Solar Luminosity") )
+
+ebm_Dw1(150,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta) %>% layout(title="Distribution of White Daisies",
+                                               xaxis = list(title = "Latitude"),
+                                               yaxis = list(title = "Solar Luminosity") )
 
 ```
 
