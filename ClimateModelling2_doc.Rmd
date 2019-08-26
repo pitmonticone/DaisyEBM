@@ -39,7 +39,7 @@ aW <- 0.75
 aB <- 0.25
 gamma <- 2.2
 delta <- 10/gamma
-c <- 7
+c <- 10
 k <- 0.003265*0.75
 T0 <- 20
 D <- 0.3 # Death Rate
@@ -450,7 +450,7 @@ I <- rep(0,cycles)
 TEMP <- matrix(NA, nrow=90, ncol=cycles)
 
 for(i in c(1:cycles)) {
-  S <- jitter(Sun6(i),5)  # oppure costante S <- 1370
+  S <- Sun6(i)
   Rin <- Incident(S,SunWt)
   Tcos <- cosZones*T
   Tm <- sum(Tcos)/sum(cosZones)
@@ -488,8 +488,9 @@ I <- rep(0,cycles)
 
 TEMP <- matrix(NA, nrow=90, ncol=cycles)
 
+
 for(i in c(1:cycles)) {
-  S <- Sun6(i)  # oppure costante S <- 1370
+  S <- Sun6(i)
   Rin <- Incident(S,SunWt)
   Tcos <- cosZones*T
   Tm <- sum(Tcos)/sum(cosZones)
@@ -499,6 +500,7 @@ for(i in c(1:cycles)) {
   I[i] <- i
   Tarr[i] <- T[45]
 } 
+
   return( data.frame(I,Barr,Warr,Uarr,Tarr) )}
 ebm_ND3 <- function(cycles,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta){
 Incident <- function(x,y){ x*y/4 }
@@ -538,7 +540,7 @@ for(i in c(1:cycles)) {
   Tarr[i] <- T[45]
 } 
   return( TEMP )}
-ebm_ND4 <- function(cycles,s,A,B,K,ai,ab,gamma,delta){
+ebm_ND4 <- function(p,cycles,s,A,B,K,ai,ab,gamma,delta){
 Incident <- function(x,y){ x*y/4 }
 Func <-  function(x){ 0.7768699*cos(0.0164348*x)^2+0.4617747 }
 Sun7 <- function(x,y){x*y}
@@ -547,9 +549,11 @@ Zones <- seq(-89, 89, by = 2)
 cosZones <- abs(cospi(Zones/180))
 SunWt <- Func(Zones)
 Rin <- Incident(S,SunWt)
-Sarr1 <- rep(0,length(Zones)+30)
+Sarr1 <- rep(0,length(Zones)+50)
 #Sarr[1] <- Sun7(S,s)
 Tarr1 <- rep(0,length(Sarr1))
+Temp1 <- rep(0,cycles)
+Time1 <- c(1:cycles)
 
 for(h in c(1:length(Sarr1))) {
 S <- 920+(h-1)*10
@@ -557,19 +561,22 @@ Sarr1[h] <- S
 T <- gauss(Zones,0,50,31.6)-6
 
 a <- alb(T,ai,ab,gamma,delta)
+Rin <- Incident(S,SunWt)
 
 for(i in c(1:cycles)) {
-Rin <- Incident(S,SunWt)
 Tcos <- cosZones*T
 TM <- sum(T)/length(Zones)
 Tm <- sum(Tcos)/sum(cosZones)
 T <- (Rin*(1-a)+K*Tm-A) / (B+K)
 a <- alb(T,ai,ab,gamma,delta)
+if(h==46){Temp1[i] <- Tm}
 }
 
 Tarr1[h] <- Tm
 } 
-return (data.frame(Tarr1,Sarr1))
+
+if(p==0){ return (data.frame(Tarr1,Sarr1)) }
+if(p==1){ return (data.frame(Time1,Temp1)) }
 
 }
 
@@ -637,7 +644,7 @@ cosZones <- abs(cospi(Zones/180))
 SunWt <- Func(Zones)
 Rin <- Incident(S,SunWt)
 Sun6 <- function(x){1370*(1+0.1*cospi(x/180))}
-T <- gauss(Zones,0,50,31.6)-6
+T <- gauss(Zones,0,50,31.6)-6 # strong dependence from this initial condition (Albedo Complexity)
 
 w <- rep(w0,length(Zones)) #0.5
 b <- rep(b0,length(Zones)) #0.2
@@ -972,17 +979,19 @@ Zones <- seq(-89, 89, by = 2)
 cosZones <- abs(cospi(Zones/180))
 SunWt <- Func(Zones)
 Rin <- Incident(S,SunWt)
-Sarr <- rep(0,length(Zones)+30)
+Sarr <- rep(0,length(Zones)+50)
+Time <- c(1:cycles)
 #Sarr[1] <- Sun7(S,s)
 
 BLACK <- matrix(NA, nrow=length(Sarr), ncol=cycles)
 WHITE <- matrix(NA, nrow=length(Sarr), ncol=cycles)
 Tarr <- rep(0,length(Sarr))
+Temp <- rep(0,cycles)
 
 for(h in c(1:length(Sarr))) {
 S <- 920+(h-1)*10
 Sarr[h] <- S
-T <- gauss(Zones,0,50,31.6)-6
+T <- gauss(Zones,0,50,31.6)-6 #strong dependence from initial conditions (offset)
 
 w <- rep(w0,length(Zones)) #0.5
 b <- rep(b0,length(Zones)) #0.2
@@ -992,9 +1001,9 @@ a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
 
 Barr <- rep(0,cycles)
 Warr <- rep(0,cycles)
+Rin <- Incident(S,SunWt)
 
 for(i in c(1:cycles)) {
-Rin <- Incident(S,SunWt)
 Tcos <- cosZones*T
 TM <- sum(T)/length(Zones)
 Tm <- sum(Tcos)/sum(cosZones)
@@ -1015,7 +1024,7 @@ u <- 1-w-b
 a <- w*aW+b*aB+u*alb(T,ai,ab,gamma,delta)
 Warr[i] <- w[45]
 Barr[i] <- b[45]
-
+if(h==46){Temp[i] <- Tm}
 }
 
 WHITE[h,] <- Warr
@@ -1025,6 +1034,7 @@ Tarr[h] <- Tm
 if(p==0){return (WHITE)}
 if(p==1){return (BLACK)}
 if(p==2){return (data.frame(Tarr,Sarr))}
+if(p==3){ return (data.frame(Temp,Time))}
 }
 ```
 
@@ -1162,7 +1172,8 @@ plot51
 # WITHOUT DAISIES
 data_ND1 <- ebm_ND1(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta) #from 500
 data_ND2 <- ebm_ND2(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
-data_ND4 <- ebm_ND4(300,1370/920,A,B,K,ai,ab,gamma,delta) #from 300
+data_ND4a <- ebm_ND4(0,300,1370/920,A,B,K,ai,ab,gamma,delta) #from 300
+data_ND4b <- ebm_ND4(1,300,1370/920,A,B,K,ai,ab,gamma,delta) #from 300
 TEMP <- ebm_ND3(500,w0,b0,A,B,K,ai,ab,aW,aB,gamma,delta)
 
 plot_ND1 <- ggplot(data_ND1,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("Without Daisies | Time Steps : 500")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
@@ -1180,7 +1191,8 @@ plot_ly(z=~TEMP)%>% add_surface() %>% layout( title="Temperature Without Daisies
 #WITH DAISIES
 data_D1 <- ebm_D1(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 data_D2 <- ebm_D2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
-data_D4 <- ebm_D4(2,300,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta) #from 300
+data_D4a <- ebm_D4(2,300,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta) 
+data_D4b <- ebm_D4(3,300,1370/920,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 TEMP    <- ebm_D3(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 BLACK   <- ebm_Db2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 WHITE   <- ebm_Dw2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
@@ -1188,7 +1200,8 @@ WHITE   <- ebm_Dw2(500,w0,b0,c,k,D,A,B,K,ai,ab,aW,aB,gamma,delta)
 
 plot_D1 <- ggplot(data_D1 ,aes(Zones))+geom_line(aes(y=w, colour = "% White"))+geom_line(aes(y=b, colour = "% Black"))+geom_line(aes(y=u, colour="% Bare Ground"))+geom_line(aes(y=T/5, colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Latitude")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
 plot_D2 <- ggplot(data_D2,aes(I))+geom_line(aes(y=Barr,colour="% Black"))+ geom_line(aes(y=Warr,colour="% White"))+ geom_line(aes(y=Uarr, colour="% Bare Ground"))+geom_line(aes(y=Tarr/25,colour="Temperature"))+ylab("Temperature & Albedo")+xlab("Time")+ggtitle("With Daisies")+scale_colour_manual(name="Legend",values=c("brown","black","white", "red"))
-plot_D4 <- ggplot(data_D4,aes(Sarr,Tarr))+ylab("Temperature")+xlab("Solar Luminosity")+ggtitle("Solar Luminosity vs. Temperature")+geom_line()
+plot_D4a <- ggplot(data_D4a,aes(Sarr,Tarr))+ylab("Temperature")+xlab("Solar Luminosity")+ggtitle("Solar Luminosity vs. Temperature")+geom_line()
+plot_D4b <- ggplot(data_D4b,aes(Time,Temp))+ylab("Temperature")+xlab("Time")+ggtitle("Dynamical Global Mean Temperature")+geom_line(colour="red")
 
 plot_D1
 plot_D2
@@ -1234,9 +1247,12 @@ plot_ly(z=~WHITE)%>% add_surface() %>% layout(title="Distribution of White Daisi
                                                yaxis = list(title = "Solar Luminosity"),
                                                zaxis = list(title = "White")  )) 
 
-data_ND4_D4 <- data.frame(data_ND4,data_D4)
-plot_ND4_D4 <- ggplot(data_ND4_D4,aes(Sarr))+ylab("Temperature")+xlab("Solar Luminosity")+ggtitle("Solar Luminosity vs. Temperature")+geom_line(aes(y=Tarr, colour = "With Daisies"))+geom_line(aes(y=Tarr1, colour = "Without Daisies"))+scale_colour_manual(name="Legend",values=c("green","brown"))
-plot_ND4_D4
+data_ND4_D4a <- data.frame(data_ND4a,data_D4a)
+plot_ND4_D4a <- ggplot(data_ND4_D4a,aes(Sarr))+ylab("Temperature")+xlab("Solar Luminosity")+ggtitle("Solar Luminosity vs. Temperature")+geom_line(aes(y=Tarr, colour = "With Daisies"))+geom_line(aes(y=Tarr1, colour = "Without Daisies"))+scale_colour_manual(name="Legend",values=c("green","brown"))
+plot_ND4_D4a
+data_ND4_D4b <- data.frame(data_ND4b,data_D4b)
+plot_ND4_D4b <- ggplot(data_ND4_D4b,aes(Time))+ylab("Temperature")+xlab("Time")+ggtitle("Dynamical Global Mean Temperature")+geom_line(aes(y=Temp, colour = "With Daisies"))+geom_line(aes(y=Temp1, colour = "Without Daisies"))+scale_colour_manual(name="Legend",values=c("green","brown"))
+plot_ND4_D4b
 
 ```
 
