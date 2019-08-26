@@ -3,10 +3,11 @@ title: "Climate Modelling"
 author: "Pietro Monticone & Davide Orsenigo"
 date: '`r Sys.Date()` | Turin University'
 output:
-  prettydoc::html_pretty:
-    highlight: github
-    theme: cayman
-    toc: yes
+  pdf_document 
+#  prettydoc::html_pretty:
+ #   highlight: github
+  #  theme: cayman
+   # toc: yes
 ---
 
 ```{r setup, include=FALSE}
