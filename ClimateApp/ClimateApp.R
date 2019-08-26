@@ -5,11 +5,8 @@ library(broom)
 library(scales)
 library(shinythemes) #---> themeSelector()
 # risonanza stocastica
-# a(input$T,input$a,input$b,input$c) 
-# LATEX FORMULAS
 # COSIN^2 --> COSIN 
 # EBM GENERALIZZATO CON FUNZIONI (COMPATTIFICAZIONE)
-# GRID PLOTLY WITH DAISIES
 
 
 # INITIALIZATION ----
