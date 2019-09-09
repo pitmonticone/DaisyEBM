@@ -64,7 +64,7 @@ ggplot(df, aes(zones,sunWt))+geom_point()+geom_smooth(aes(y=f(zones,0.7768699,0.
 
 ### Functional Forms
 
-```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 gauss <-  function(x,m,sd,b){
   ((24+b)/(0.00798*sqrt(2*pi*sd^2)))*exp(-(x-m)^2/(2*sd^2))-b
 }
@@ -1038,7 +1038,7 @@ if(p==3){ return (data.frame(Temp,Time))}
 }
 ```
 
-##### Solar Luminosity
+##### Solar Luminosity 
 $$ S_1(t)= \frac{S}{100}t $$
 $$ S_2(t)= S(\sin^2(t+90)) $$
 $$ S_3(t)= S\Big(1-\frac{1}{\sqrt{2\pi}}e^{-(t-50)^2/2}\Big) $$
