@@ -26,6 +26,11 @@ library(gganimate)
 library(knitr)
 library(DT)
 library(colorRamps)
+# 1. estimate w0 and b0 with multiple model runs
+# 2. geophysiology (Gaia , daisies in ebm)
+# 3. clean the whole report
+# 4. update climapp
+# 5. solar irradiance : from cos^2 to cos 
 ```
 ### Input Parameters 
 ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
