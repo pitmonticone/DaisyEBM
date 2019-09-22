@@ -1,6 +1,4 @@
-# Climate Modelling Project
-## Pietro Monticone & Davide Orsenigo
-### 2019 | Turin University
+# Climate Modelling | Monticone, Orsenigo
 
 * [Modelling](https://pitmonticone.github.io/Climate-Physics/)
 
