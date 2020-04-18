@@ -1,5 +1,4 @@
-# Climate Modelling | Monticone, Orsenigo
+## Climate Modelling Project
 
-* [Modelling](https://pitmonticone.github.io/Climate-Physics/)
+Visit the [website](https://pitmonticone.github.io/Climate-Physics/).
 
-* [Exam](https://pitmonticone.github.io/Climate-Physics/Climate_Exam.html)
