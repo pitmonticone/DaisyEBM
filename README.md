@@ -1,4 +1,4 @@
 ## Climate Modelling Project
 
-Visit the [website](https://pitmonticone.github.io/Climate-Physics/).
+Visit the [website](https://pitmonticone.github.io/ClimateModellingProject/).
 
