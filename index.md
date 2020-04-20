@@ -1,4 +1,3 @@
-# Climate Modelling Project
 ## Embedding Daisies in a 1D Energy Balance Model
 
 ### Authors 
