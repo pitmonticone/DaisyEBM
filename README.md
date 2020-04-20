@@ -1,4 +1,4 @@
-## Climate Modelling Project
+## Daisy EBM
 
 Visit the [website](https://pitmonticone.github.io/ClimateModellingProject/).
 
