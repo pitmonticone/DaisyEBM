@@ -7,8 +7,8 @@
 
 ### Contents
 
-* [Report](https://pitmonticone.github.io/Climate-Physics/ClimateModelling2_doc.html)
-* [Slides](https://pitmonticone.github.io/Climate-Physics/ClimateModelling_slides.html)
+* [Report](https://pitmonticone.github.io/DaisyEBM/ClimateModelling2_doc.html)
+* [Slides](https://pitmonticone.github.io/DaisyEBM/slides/ClimateModelling_slides.html)
 * [App](https://pietro-monticone.shinyapps.io/ClimateApp/)
 
 
