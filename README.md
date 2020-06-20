@@ -1,6 +1,23 @@
-![Size](https://img.shields.io/github/repo-size/pitmonticone/DaisyEBM)
+<!-- Meta-Badges -->
+</p>
 
-# Embedding Daisies in a 1D Energy Balance Model
+<p align="center">
+    <img alt="Size" src="https://img.shields.io/github/repo-size/pitmonticone/DaisyEBM">
+  </a>
+    <img alt="Languages" src="https://img.shields.io/github/languages/count/pitmonticone/DaisyEBM">
+  </a>
+    <img alt="Contributors" src="https://img.shields.io/github/contributors/pitmonticone/DaisyEBM">
+  </a>
+    <a href="https://opensource.org/licenses/Apache-2.0">
+    <img alt="Apache-2.0 Licence" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg">
+  </a>
+  
+</p>
+
+<!-- Title -->
+<h1 align="center">
+  Embedding Daisies in a 1D Energy Balance Model
+</h1>
 
 Visit the [website](https://pitmonticone.github.io/DaisyEBM/).
 
